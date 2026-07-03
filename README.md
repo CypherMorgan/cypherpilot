@@ -4,6 +4,13 @@
 
 > Created by **Cypher Morgan**
 
+[![CI](https://github.com/CypherMorgan/qpilot/actions/workflows/ci.yml/badge.svg)](https://github.com/CypherMorgan/qpilot/actions/workflows/ci.yml)
+[![GitHub Pages](https://github.com/CypherMorgan/qpilot/actions/workflows/deploy-pages.yml/badge.svg)](https://cyphermorgan.github.io/qpilot/)
+
+> **Live demo:** [cyphermorgan.github.io/qpilot](https://cyphermorgan.github.io/qpilot/)
+>
+> *Note: The GitHub Pages site is a static UI preview. API features require a running backend.*
+
 ---
 
 ## Features
@@ -207,6 +214,31 @@ uv run ruff check
 | **v0.3.0** | API Test Generation module | ✅ Done |
 | **v0.4.0** | Automation Failure Analysis module | 🔜 Next |
 | **v0.5.0** | Multi-user, teams, session history | 🔜 Planned |
+
+---
+
+## Deployment
+
+### GitHub Pages (Frontend UI)
+
+The frontend is automatically deployed to GitHub Pages on every push to `main` via the `deploy-pages.yml` workflow.
+
+| URL | Notes |
+|---|---|
+| `https://cyphermorgan.github.io/qpilot/` | Live demo — static UI preview |
+| Backend API | Requires a separate deployment (e.g. Railway, Fly.io, or your own server) |
+
+To deploy the backend, set `VITE_API_BASE_URL` in the Pages workflow to your backend URL.
+
+### Backend (Docker)
+
+For production deployment of the full stack (backend + database):
+
+```bash
+cp .env.example .env
+# Edit .env with real secrets and your AI provider key
+docker compose up --build -d
+```
 
 ---
 
