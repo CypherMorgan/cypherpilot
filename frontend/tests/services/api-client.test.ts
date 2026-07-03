@@ -64,7 +64,7 @@ describe("apiClient", () => {
   it("is configured with correct base URL and timeout", async () => {
     // Dynamic import to get the configured instance
     const { apiClient } = await import("@/services/api-client");
-    expect(apiClient.defaults.timeout).toBe(60000);
+    expect(apiClient.defaults.timeout).toBe(180000);
     expect(apiClient.defaults.baseURL).toContain("/api/v1");
   });
 });

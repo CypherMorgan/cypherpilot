@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 
 import { Sidebar } from "@/layouts/sidebar";
 import { Topbar } from "@/layouts/topbar";
+import { BackendBanner } from "@/components/backend-banner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
@@ -55,6 +56,8 @@ export function RootLayout() {
         <Topbar
           onMenuToggle={() => setMobileMenuOpen(true)}
         />
+
+        <BackendBanner />
 
         <ScrollArea className="flex-1">
           <main className="flex-1">

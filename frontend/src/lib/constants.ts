@@ -2,6 +2,9 @@
 export const APP_NAME = "QPilot";
 export const APP_VERSION = "0.1.0";
 
+/** Set to "true" at build time for GitHub Pages deployment (no backend) */
+export const IS_PREVIEW = import.meta.env.VITE_PREVIEW_ONLY === "true";
+
 /** API base URL — configured via Vite env, defaults to local backend */
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
 
