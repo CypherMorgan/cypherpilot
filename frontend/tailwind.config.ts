@@ -65,22 +65,8 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: [
-          "-apple-system",
-          "BlinkMacSystemFont",
-          "Segoe UI",
-          "Roboto",
-          "Helvetica Neue",
-          "Arial",
-          "sans-serif",
-        ],
-        mono: [
-          "SF Mono",
-          "Fira Code",
-          "Fira Mono",
-          "Roboto Mono",
-          "monospace",
-        ],
+        sans: ['"DM Sans"', "Inter", "system-ui", "-apple-system", "sans-serif"],
+        mono: ['"JetBrains Mono"', '"Fira Code"', "monospace"],
       },
       keyframes: {
         "accordion-down": {
@@ -91,10 +77,17 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        blob: {
+          "0%, 100%": { transform: "translate(0, 0) scale(1)" },
+          "25%": { transform: "translate(30px, -50px) scale(1.1)" },
+          "50%": { transform: "translate(-20px, 20px) scale(0.9)" },
+          "75%": { transform: "translate(50px, 30px) scale(1.05)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        blob: "blob var(--blob-duration, 14s) ease-in-out infinite",
       },
     },
   },

@@ -38,6 +38,8 @@ export interface HealthResponse {
   status: string;
   app_name: string;
   app_version: string;
+  active_provider?: string;
+  active_model?: string;
   checks: {
     database: {
       status: string;
