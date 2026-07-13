@@ -3,6 +3,7 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { APP_NAME, APP_VERSION } from "@/lib/constants";
 
 export function SettingsPage() {
   const { theme, setTheme } = useTheme();
@@ -53,7 +54,7 @@ export function SettingsPage() {
       <section>
         <h2 className="text-base font-semibold">About</h2>
         <div className="mt-2 space-y-1 text-sm text-muted-foreground">
-          <p>QPilot v0.4.1</p>
+          <p>{APP_NAME} v{APP_VERSION}</p>
           <p>AI-Powered Quality Engineering Platform</p>
         </div>
       </section>

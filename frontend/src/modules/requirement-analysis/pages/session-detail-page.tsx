@@ -1,7 +1,7 @@
 /** Session detail page — view a past analysis result. */
 
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, FileQuestion, History } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
@@ -9,7 +9,6 @@ import { AnalysisResults } from "@/modules/requirement-analysis/components/analy
 import { useAnalysisSession } from "@/modules/requirement-analysis/hooks/use-requirement-analysis";
 import { LoadingState } from "@/components/loading-state";
 import { EmptyState } from "@/components/empty-state";
-import { FileQuestion } from "lucide-react";
 
 export function SessionDetailPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -23,7 +22,7 @@ export function SessionDetailPage() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => navigate(ROUTES.HOME)}
+          onClick={() => navigate(ROUTES.REQUIREMENT_ANALYSIS)}
           className="shrink-0"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -36,6 +35,15 @@ export function SessionDetailPage() {
             {sessionId.slice(0, 8)}...
           </code>
         )}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => navigate(ROUTES.REQUIREMENT_SESSIONS)}
+          className="ml-auto gap-1.5 text-xs text-muted-foreground"
+        >
+          <History className="h-3.5 w-3.5" />
+          History
+        </Button>
       </div>
 
       {/* Loading state */}
@@ -51,8 +59,8 @@ export function SessionDetailPage() {
             "Could not load this analysis session. It may have been deleted."
           }
           action={
-            <Button variant="outline" onClick={() => navigate(ROUTES.HOME)}>
-              Back to Dashboard
+            <Button variant="outline" onClick={() => navigate(ROUTES.REQUIREMENT_SESSIONS)}>
+              Back to Sessions
             </Button>
           }
         />

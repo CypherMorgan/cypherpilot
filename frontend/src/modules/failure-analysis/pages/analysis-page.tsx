@@ -5,7 +5,7 @@ Provides the complete workflow: paste failure output, analyze, view results.
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, History } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
@@ -58,6 +58,15 @@ export function FailureAnalysisPage() {
             <h1 className="text-2xl font-bold tracking-tight">
               Failure Analysis
             </h1>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate(ROUTES.FAILURE_SESSIONS)}
+              className="ml-auto gap-1.5 text-xs text-muted-foreground"
+            >
+              <History className="h-3.5 w-3.5" />
+              History
+            </Button>
           </div>
           <p className="mt-1 ml-10 text-sm text-muted-foreground">
             Paste CI/CD logs, stack traces, or error output to get

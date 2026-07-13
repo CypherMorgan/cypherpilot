@@ -249,12 +249,16 @@ uv run ruff check
 ## Roadmap
 
 | Release | Focus | Status |
-|---|---|---|
+|---|---|---|---|
 | **v0.1.0** | Foundation: backend, database, Docker, AI infra | ✅ Done |
 | **v0.2.0** | Requirement Analysis module | ✅ Done |
 | **v0.3.0** | API Test Generation module | ✅ Done |
 | **v0.4.0** | Automation Failure Analysis module | ✅ Done |
 | **v0.4.1** | Export & Share (Markdown/JSON download, clipboard copy) | ✅ Done |
+| **v0.4.2** | Session History Page — browse past analyses, summaries, click to details | ✅ Done |
+| **v0.4.3** | CI Log Presets — one-click example failure scenarios for demo/learning | 🔜 Planned |
+| **v0.4.4** | Session Cleanup & Retention — delete button + configurable retention policy | 🔜 Planned |
+| **v0.4.5** | Multi-Artifact Failure Analysis — file upload (screenshots, page source, JSON logs) | 🔜 Planned |
 | **v0.5.0** | Multi-user, teams, session history | 🔜 Planned |
 
 ---

@@ -1,6 +1,6 @@
 /** Application-wide constants */
 export const APP_NAME = "QPilot";
-export const APP_VERSION = "0.4.1";
+export const APP_VERSION = "0.4.2";
 
 /** Set to "true" at build time for GitHub Pages deployment (no backend) */
 export const IS_PREVIEW = import.meta.env.VITE_PREVIEW_ONLY === "true";
@@ -16,10 +16,13 @@ export const ROUTES = {
   HOME: "/",
   SETTINGS: "/settings",
   REQUIREMENT_ANALYSIS: "/requirements/analyze",
+  REQUIREMENT_SESSIONS: "/requirements/sessions",
   REQUIREMENT_SESSION: "/requirements/sessions/:sessionId",
   API_TEST_GENERATION: "/api-tests/analyze",
+  API_TEST_SESSIONS: "/api-tests/sessions",
   API_TEST_SESSION: "/api-tests/sessions/:sessionId",
   FAILURE_ANALYSIS: "/failures/analyze",
+  FAILURE_SESSIONS: "/failures/sessions",
   FAILURE_SESSION: "/failures/sessions/:sessionId",
 } as const;
 

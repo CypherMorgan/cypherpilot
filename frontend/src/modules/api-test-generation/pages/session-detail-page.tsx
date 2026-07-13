@@ -1,7 +1,7 @@
 /** Session detail page — view a past API test generation result. */
 
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, FileQuestion } from "lucide-react";
+import { ArrowLeft, FileQuestion, History } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
@@ -22,7 +22,7 @@ export function ApiTestSessionDetailPage() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => navigate(ROUTES.HOME)}
+          onClick={() => navigate(ROUTES.API_TEST_GENERATION)}
           className="shrink-0"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -35,6 +35,15 @@ export function ApiTestSessionDetailPage() {
             {sessionId.slice(0, 8)}...
           </code>
         )}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => navigate(ROUTES.API_TEST_SESSIONS)}
+          className="ml-auto gap-1.5 text-xs text-muted-foreground"
+        >
+          <History className="h-3.5 w-3.5" />
+          History
+        </Button>
       </div>
 
       {/* Loading state */}
@@ -50,8 +59,8 @@ export function ApiTestSessionDetailPage() {
             "Could not load this generation session. It may have been deleted."
           }
           action={
-            <Button variant="outline" onClick={() => navigate(ROUTES.HOME)}>
-              Back to Dashboard
+            <Button variant="outline" onClick={() => navigate(ROUTES.API_TEST_SESSIONS)}>
+              Back to Sessions
             </Button>
           }
         />
