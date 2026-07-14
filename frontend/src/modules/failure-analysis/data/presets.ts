@@ -522,7 +522,7 @@ Timestamp: 2026-07-14 16:30:00 UTC
       uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: arn:aws:iam::123456789012:role/qpilot-ci-role
-        role-session-name: qpilot-deploy-${{ github.run_id }}
+        role-session-name: qpilot-deploy-$\{{ github.run_id }}
         aws-region: us-east-1
         role-duration-seconds: 5400  # ← 1.5h (session duration 90 min)
 
