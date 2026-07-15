@@ -6,7 +6,8 @@ the configured retention policy.
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from typing import Any
 
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy import delete, select
@@ -31,13 +32,13 @@ _logger = get_logger(__name__)
     description=(
         "Remove all analysis sessions older than the configured "
         "retention period. The retention period is set via the "
-        "``SESSION_RETENTION_DAYS`` environment variable (default 90)."
+        "``RETENTION__RETENTION_DAYS`` environment variable (default 90)."
     ),
 )
 async def delete_expired_sessions(
     request: Request,
     db_session: AsyncSession = Depends(get_db),  # noqa: B008
-) -> dict:
+) -> dict[str, Any]:
     """Delete all analysis sessions past the retention period."""
     retention_days = request.app.state.config.retention.retention_days
 
@@ -47,7 +48,7 @@ async def delete_expired_sessions(
             "meta": ResponseMeta().model_dump(),
         }
 
-    cutoff = datetime.now(datetime.UTC) - timedelta(days=retention_days)
+    cutoff = datetime.now(timezone.utc) - timedelta(days=retention_days)  # noqa: UP017
 
     # Count matching sessions first
     count_stmt = select(AnalysisSession.id).where(

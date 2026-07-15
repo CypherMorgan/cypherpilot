@@ -166,7 +166,7 @@ app/
 ├── modules/                    # Business feature modules
 │   ├── requirement_analysis/   # Requirement → test case generation
 │   ├── api_test_generation/    # OpenAPI spec → pytest suite generation
-│   └── failure_analysis/      # CI/CD failure → root cause analysis
+│   └── failure_analysis/       # CI/CD failure → root cause analysis
 ├── middleware/                 # Request ID, structured logging
 ├── config.py                   # Pydantic-settings configuration
 ├── exceptions.py               # Domain exception hierarchy
