@@ -30,8 +30,44 @@ import {
   AutomationCandidatesTable,
   PriorityAssessmentBlock,
 } from "@/modules/requirement-analysis/components/section-content";
-import { ExportActions } from "@/modules/requirement-analysis/components/export-actions";
+import { ExportActions } from "@/components/export-actions";
 import type { RequirementAnalysisResult } from "@/modules/requirement-analysis/types";
+
+/**
+ * Format the requirement analysis result as Markdown (client-side).
+ */
+function formatAsMarkdown(result: RequirementAnalysisResult): string {
+  const lines: string[] = [];
+  lines.push("# Requirement Analysis Report");
+  lines.push("");
+  lines.push(`**Input summary:** ${result.input_summary}`);
+  lines.push("");
+  lines.push("---");
+  lines.push("");
+
+  lines.push("## Functional Test Cases");
+  for (const tc of result.functional_tests) {
+    lines.push(`### ${tc.id}: ${tc.title}`);
+    lines.push(`- **Priority:** ${tc.priority}`);
+    lines.push(`- ${tc.description}`);
+    lines.push("");
+  }
+
+  lines.push("## Negative Test Cases");
+  for (const tc of result.negative_tests) {
+    lines.push(`### ${tc.id}: ${tc.title}`);
+    lines.push(`- **Priority:** ${tc.priority}`);
+    lines.push(`- ${tc.description}`);
+    lines.push("");
+  }
+
+  lines.push("## Risks");
+  for (const r of result.risks) {
+    lines.push(`- **${r.id}:** ${r.description} (Severity: ${r.severity}, Likelihood: ${r.likelihood})`);
+  }
+
+  return lines.join("\n");
+}
 
 interface AnalysisResultsProps {
   result: RequirementAnalysisResult;
@@ -60,7 +96,11 @@ export function AnalysisResults({
             </p>
           </div>
           <div className="flex gap-2">
-            <ExportActions result={result} />
+            <ExportActions
+              formatAsMarkdown={() => formatAsMarkdown(result)}
+              formatAsJson={() => JSON.stringify(result, null, 2)}
+              filenamePrefix="requirement-analysis"
+            />
           </div>
         </div>
         {(provider || model) && (

@@ -6,7 +6,7 @@ analyze, view results.
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AlertCircle, ArrowLeft, History, Paperclip } from "lucide-react";
+import { AlertCircle, ArrowLeft, History, Paperclip, RefreshCw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
@@ -154,11 +154,38 @@ export function FailureAnalysisPage() {
             />
           </div>
 
-          {/* Error message */}
+          {/* Error message with retry */}
           {error && (
-            <div className="flex items-start gap-2 rounded-md border border-destructive/50 bg-destructive/5 p-3 text-sm text-destructive">
-              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
-              <span>{error}</span>
+            <div className="rounded-md border border-destructive/50 bg-destructive/5 p-4">
+              <div className="flex items-start gap-2">
+                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-destructive">
+                    Analysis Failed
+                  </p>
+                  <p className="mt-0.5 text-sm text-destructive/80">
+                    {error}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-3 flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSubmit}
+                  disabled={!canSubmit}
+                >
+                  <RefreshCw className="mr-1.5 h-3.5 w-3.5" />
+                  Retry
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setError(null)}
+                >
+                  Dismiss
+                </Button>
+              </div>
             </div>
           )}
 

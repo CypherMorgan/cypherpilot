@@ -3,7 +3,7 @@
 **CypherPilot** is an AI-augmented quality engineering platform that helps QA engineers and SDETs analyze requirements, generate API test suites, and diagnose automation failures — using AI as an accelerator, not a crutch.
 
 > Created by **Cypher Morgan**
-![Version](https://img.shields.io/badge/version-0.4.8-blue)
+![Version](https://img.shields.io/badge/version-0.4.9-blue)
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green)
 ![React](https://img.shields.io/badge/React-18-blue)
@@ -23,7 +23,7 @@
 
 See the full [Changelog](./CHANGELOG.md) for the complete release history.
 
-**Latest: v0.4.8** — Quality-of-Life Polish. [Read more](./CHANGELOG.md#v048--quality-of-life-polish-2026-07-17).
+**Latest: v0.4.9** — Usability & Consistency. [Read more](./CHANGELOG.md#v049--usability--consistency-2026-07-19).
 
 ## Features
 
@@ -262,6 +262,7 @@ uv run ruff check
 | **v0.4.6** | Session Cleanup & Retention — delete button + configurable retention policy | ✅ Done |
 | **v0.4.7** | Multi-Artifact Failure Analysis — file upload (screenshots, page source, JSON logs) | ✅ Done |
 | **v0.4.8** | Quality-of-Life Polish — keyboard shortcuts, elapsed timer, session search/filter, dashboard fix, requirement export fix | ✅ Done |
+| **v0.4.9** | Usability & Consistency — AI Provider settings UI, shared export/session-list components, friendlier error messages with retry | ✅ Done |
 | **v0.5.0** | Multi-user & Teams — authentication, user management, RBAC | 🔜 Planned |
 
 ---

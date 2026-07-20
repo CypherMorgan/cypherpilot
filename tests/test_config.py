@@ -15,7 +15,7 @@ def test_config_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv("AI__OPENROUTER_API_KEY", raising=False)
     config = AppConfig(_env_file=None)
     assert config.app_name == "CypherPilot"
-    assert config.app_version == "0.4.8"
+    assert config.app_version == "0.4.9"
     assert config.log_level == "INFO"
     assert config.ai.provider == ""
     assert config.ai.openrouter_model == "openai/gpt-4o-mini"

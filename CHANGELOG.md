@@ -4,6 +4,14 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
+## v0.4.9 — Usability & Consistency (2026-07-19)
+
+- **AI Provider settings UI** — configure provider (OpenRouter / Ollama), model, API key, and base URL from the Settings page without editing `.env` or restarting
+- **Shared export dropdown** — extracted `ExportActions` component using shadcn `DropdownMenu` replaces the hand-rolled `useState`+`onBlur` hack in Failure Analysis; both modules now use consistent export UX
+- **Shared SessionListPage** — parameterized `SessionListPage<T>` component eliminates ~550 lines of duplicate pagination/search/filter/delete code; all 3 session pages now share one implementation
+- **Better AI error messages** — structured error panels with "Analysis Failed" title, error details, Retry button (replays last input), and Dismiss button
+- **Version bumped**: 0.4.8 → 0.4.9
+
 ## v0.4.8 — Quality-of-Life Polish (2026-07-17)
 
 - **Fix dead Export/Copy buttons** in Requirement Analysis results — wired up the existing `ExportActions` component

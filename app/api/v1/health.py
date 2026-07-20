@@ -71,7 +71,7 @@ async def health_check(request: Request) -> dict[str, Any]:
         "data": {
             "status": "healthy",
             "app_name": getattr(config, "app_name", "CypherPilot"),
-            "app_version": getattr(config, "app_version", "0.4.8"),
+            "app_version": getattr(config, "app_version", "0.4.9"),
             "active_provider": active_provider,
             "active_model": active_model,
             "checks": {

@@ -1,6 +1,6 @@
 /** Application-wide constants */
 export const APP_NAME = "CypherPilot";
-export const APP_VERSION = "0.4.8";
+export const APP_VERSION = "0.4.9";
 
 /** Set to "true" at build time for GitHub Pages deployment (no backend) */
 export const IS_PREVIEW = import.meta.env.VITE_PREVIEW_ONLY === "true";

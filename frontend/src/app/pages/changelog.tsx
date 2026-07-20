@@ -10,6 +10,17 @@ interface ChangelogEntry {
 
 const entries: ChangelogEntry[] = [
   {
+    version: "0.4.9",
+    date: "2026-07-19",
+    title: "Usability & Consistency",
+    items: [
+      "AI Provider settings UI — configure provider, model, API key, and base URL from Settings without editing .env or restarting",
+      "Shared export dropdown — consistent ExportActions component with DropdownMenu across all modules",
+      "Shared SessionListPage — parameterized component eliminates ~550 lines of duplicate pagination/search/filter/delete code",
+      "Better AI error messages — structured error panels with Retry button (replays last input) and Dismiss",
+    ],
+  },
+  {
     version: "0.4.8",
     date: "2026-07-17",
     title: "Quality-of-Life Polish",

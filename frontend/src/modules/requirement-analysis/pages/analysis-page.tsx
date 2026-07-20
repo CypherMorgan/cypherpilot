@@ -5,7 +5,7 @@ Provides the complete workflow: input requirements, analyze, view results.
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, History } from "lucide-react";
+import { ArrowLeft, History, RefreshCw, AlertCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
@@ -24,9 +24,13 @@ export function RequirementAnalysisPage() {
   } = useAnalyzeRequirements();
 
   const [error, setError] = useState<string | null>(null);
+  const [lastContent, setLastContent] = useState("");
+  const [lastSourceType, setLastSourceType] = useState<InputSourceType>("plain_text");
 
   const handleSubmit = async (content: string, sourceType: InputSourceType) => {
     setError(null);
+    setLastContent(content);
+    setLastSourceType(sourceType);
     try {
       await analyze({
         content,
@@ -39,6 +43,12 @@ export function RequirementAnalysisPage() {
           ? (err as { message: string }).message
           : "An unexpected error occurred during analysis.";
       setError(message);
+    }
+  };
+
+  const handleRetry = async () => {
+    if (lastContent) {
+      await handleSubmit(lastContent, lastSourceType);
     }
   };
 
@@ -82,8 +92,43 @@ export function RequirementAnalysisPage() {
           <RequirementEditor
             onSubmit={handleSubmit}
             isSubmitting={isPending}
-            error={error}
+            error={null}
           />
+
+          {/* Error message with retry */}
+          {error && (
+            <div className="rounded-md border border-destructive/50 bg-destructive/5 p-4">
+              <div className="flex items-start gap-2">
+                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-destructive">
+                    Analysis Failed
+                  </p>
+                  <p className="mt-0.5 text-sm text-destructive/80">
+                    {error}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-3 flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleRetry}
+                  disabled={isPending || !lastContent}
+                >
+                  <RefreshCw className="mr-1.5 h-3.5 w-3.5" />
+                  Retry
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setError(null)}
+                >
+                  Dismiss
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="space-y-6">
