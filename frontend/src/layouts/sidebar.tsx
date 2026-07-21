@@ -5,8 +5,9 @@ import {
   type LucideIcon,
   FlaskConical,
   Bug,
-  FileJson,
   Megaphone,
+  Users,
+  FileJson,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -17,6 +18,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { UserMenu } from "@/components/user-menu";
 
 interface NavItem {
   label: string;
@@ -27,6 +29,7 @@ interface NavItem {
 
 const mainNav: NavItem[] = [
   { label: "Dashboard", path: "/", icon: LayoutDashboard },
+  { label: "Teams", path: "/teams", icon: Users },
 ];
 
 const moduleNav: NavItem[] = [
@@ -130,9 +133,15 @@ export function Sidebar({ collapsed }: SidebarProps) {
         {collapsed && <div className="flex flex-col gap-1">{renderNavItems(moduleNav)}</div>}
       </nav>
 
-      {/* Bottom section */}
+      {/* Bottom section: user menu + settings */}
       <div className="border-t border-sidebar-border p-3">
-        <div className="flex flex-col gap-1">{renderNavItems(bottomNav)}</div>
+        {!collapsed && <UserMenu />}
+        {collapsed && (
+          <div className="flex flex-col items-center gap-1">
+            <UserMenu />
+          </div>
+        )}
+        <div className="mt-2 flex flex-col gap-1">{renderNavItems(bottomNav)}</div>
       </div>
     </aside>
   );

@@ -7,6 +7,7 @@ and downloading generated test files.
 
 from __future__ import annotations
 
+import uuid
 from typing import Any
 from uuid import UUID
 
@@ -23,6 +24,8 @@ from app.modules.api_test_generation.models import (
 from app.modules.api_test_generation.service import (
     ApiTestGenerationService,
 )
+from app.modules.auth.middleware import get_optional_current_user
+from app.modules.auth.models import User
 
 router = APIRouter(
     prefix="/openapi",
@@ -75,6 +78,7 @@ def _get_service(
 async def generate_api_tests(
     request: OpenApiGenerateRequest,
     service: ApiTestGenerationService = Depends(_get_service),
+    user: User | None = Depends(get_optional_current_user),
     http_request: Request = None,  # type: ignore[assignment]
 ) -> dict[str, Any]:
     """Generate API tests from the given OpenAPI specification."""
@@ -85,7 +89,8 @@ async def generate_api_tests(
         path_filter=request.paths is not None,
     )
 
-    result = await service.analyze(request)
+    user_id = uuid.UUID(str(user.id)) if user else None
+    result = await service.analyze(request, user_id=user_id)
 
     response = {
         "data": result.model_dump(mode="json"),
@@ -129,10 +134,14 @@ async def list_generation_sessions(
     page: int = Query(default=1, ge=1, description="Page number (1-indexed)."),
     page_size: int = Query(default=20, ge=1, le=100, description="Items per page."),
     service: ApiTestGenerationService = Depends(_get_service),
+    user: User | None = Depends(get_optional_current_user),
     http_request: Request = None,  # type: ignore[assignment]
 ) -> dict[str, Any]:
     """List past API test generation sessions."""
-    items, total = await service.list_sessions(page=page, page_size=page_size)
+    user_id = uuid.UUID(str(user.id)) if user else None
+    items, total = await service.list_sessions(
+        page=page, page_size=page_size, user_id=user_id,
+    )
 
     has_more = (page * page_size) < total
 

@@ -7,9 +7,10 @@ query methods.
 
 from __future__ import annotations
 
+import uuid
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.infrastructure.models.analysis_session import AnalysisSession
@@ -33,17 +34,25 @@ class FailureAnalysisRepository(BaseRepository[AnalysisSession]):
         self,
         page: int = 1,
         page_size: int = 20,
+        user_id: uuid.UUID | None = None,
     ) -> tuple[list[AnalysisSessionListItem], int]:
         """List failure analysis sessions with pagination.
 
         Filters to ``FAILURE_ANALYSIS`` type and returns lightweight
         summary items sorted by creation date (newest first).
+
+        If ``user_id`` is provided, only sessions owned by that user
+        are returned.  Otherwise, all sessions are returned.
         """
         from app.domain.models import AnalysisType
 
+        base_filter = AnalysisSession.analysis_type == AnalysisType.FAILURE_ANALYSIS
+        if user_id is not None:
+            base_filter = base_filter & (AnalysisSession.user_id == user_id)
+
         stmt = (
             select(AnalysisSession)
-            .where(AnalysisSession.analysis_type == AnalysisType.FAILURE_ANALYSIS)
+            .where(base_filter)
             .order_by(AnalysisSession.created_at.desc())
             .offset((page - 1) * page_size)
             .limit(page_size)
@@ -53,11 +62,12 @@ class FailureAnalysisRepository(BaseRepository[AnalysisSession]):
 
         # Also get total count
         count_stmt = (
-            select(self.model_class.id)
-            .where(self.model_class.analysis_type == AnalysisType.FAILURE_ANALYSIS)
+            select(func.count())
+            .select_from(AnalysisSession)
+            .where(base_filter)
         )
         count_result = await self._session.execute(count_stmt)
-        total = len(list(count_result.scalars().all()))
+        total: int = count_result.scalar() or 0
 
         items = [
             AnalysisSessionListItem(

@@ -36,6 +36,12 @@ from app.infrastructure.models import (  # noqa: F401 — registers models on Ba
 )
 from app.logging_ import configure_logging
 from app.middleware.request_id import RequestIDMiddleware
+from app.modules.auth.config import AuthConfig
+from app.modules.auth.models import User  # noqa: F401 — registers User on Base.metadata
+from app.modules.teams.models import (  # noqa: F401 — registers Team/TeamMember on Base.metadata
+    Team,
+    TeamMember,
+)
 
 _logger = get_logger(__name__)
 
@@ -202,6 +208,10 @@ def _make_lifespan(config: AppConfig) -> Callable[..., AsyncIterator[None]]:
             echo=config.database.echo,
         )
         app.state.db_manager = db_manager
+
+        # Initialise auth configuration
+        auth_config = AuthConfig()
+        app.state.auth_config = auth_config
 
         # Initialise the provider registry
         registry = ProviderRegistry()

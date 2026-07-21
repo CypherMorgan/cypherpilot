@@ -1,0 +1,2 @@
+"""Authentication & user management module.
+"""

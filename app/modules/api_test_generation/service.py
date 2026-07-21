@@ -13,6 +13,7 @@ Orchestrates the end-to-end generation pipeline:
 from __future__ import annotations
 
 import time
+import uuid as _uuid
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -73,7 +74,11 @@ class ApiTestGenerationService:
 
     # ── Public API ──────────────────────────────────────────────
 
-    async def analyze(self, request: OpenApiGenerateRequest) -> OpenApiGenerateResponse:
+    async def analyze(
+        self,
+        request: OpenApiGenerateRequest,
+        user_id: _uuid.UUID | None = None,
+    ) -> OpenApiGenerateResponse:
         """Run the full test generation pipeline.
 
         Args:
@@ -115,6 +120,7 @@ class ApiTestGenerationService:
                 status=AnalysisStatus.PROCESSING,
                 input_content=request.spec[:10000],  # Store truncated spec
                 input_source_type=f"openapi_{request.spec_format}",
+                user_id=user_id,
             )
             session = await self._repository.create(session)
             _logger.info(
@@ -322,11 +328,13 @@ class ApiTestGenerationService:
         self,
         page: int = 1,
         page_size: int = 20,
+        user_id: _uuid.UUID | None = None,
     ) -> tuple[list[OpenApiSessionListItem], int]:
         """List API test generation sessions with pagination."""
         return await self._repository.list_sessions(
             page=page,
             page_size=page_size,
+            user_id=user_id,
         )
 
     async def delete_session(self, session_id: UUID) -> None:

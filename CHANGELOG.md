@@ -4,6 +4,34 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
+## v0.5.0 — Multi-User & Teams (2026-07-21)
+
+### Backend
+- **User authentication** — registration, login, JWT tokens, bcrypt password hashing
+- **User model** — `users` table with username, email, display_name, role (admin/user/viewer), is_active
+- **Auth middleware** — `get_current_user` (required) and `get_optional_current_user` (optional) FastAPI dependencies
+- **Auth endpoints** — `POST /auth/register`, `POST /auth/login`, `GET /auth/me`, `POST /auth/change-password`
+- **Team management** — `teams` and `team_members` tables with owner/admin/member/viewer roles
+- **Team endpoints** — CRUD operations, invite/remove members, update member roles
+- **Session ownership** — nullable `user_id` and `team_id` FK on `analysis_sessions` for scoped access
+- **RBAC-ready** — all module list endpoints accept optional user_id for session scoping
+- **Alembic migrations** — `c2d3e4f5a6b7` (users), `d3e4f5a6b7c8` (session user_id), `e4f5a6b7c8d9` (teams + team_members)
+
+### Frontend
+- **Login & Register pages** — clean auth forms with error handling and validation
+- **AuthContext & useAuth** — JWT token stored in localStorage, auto-validation on mount
+- **Protected routes** — redirects to /login when unauthenticated
+- **API interceptor** — automatically injects Bearer token in all requests
+- **User menu** — avatar with initials, display name, role badge, sign-out dropdown
+- **Teams pages** — team list with create dialog, team detail with member management
+- **Invite members** — username-based invitation with role selection
+- **Member management** — role editing (admin/member/viewer) and member removal
+- **UI components added** — Input, Label, Card, Avatar, Dialog, Select
+
+### Quality
+- **293 backend tests**, 34 frontend tests all pass
+- ruff, tsc, vite build clean
+
 ## v0.4.9 — Usability & Consistency (2026-07-19)
 
 - **AI Provider settings UI** — configure provider (OpenRouter / Ollama), model, API key, and base URL from the Settings page without editing `.env` or restarting

@@ -20,11 +20,13 @@ export const apiClient = axios.create({
 });
 
 /**
- * Request interceptor — inject common headers.
+ * Request interceptor — inject auth token from localStorage.
  */
 apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  // Future: inject auth tokens here
-  // config.headers.Authorization = `Bearer ${token}`;
+  const token = localStorage.getItem("cypherpilot-token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 });
 

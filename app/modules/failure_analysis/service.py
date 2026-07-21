@@ -14,6 +14,7 @@ Also supports multi-artifact analysis with file uploads.
 from __future__ import annotations
 
 import time
+import uuid as _uuid
 from pathlib import Path
 from uuid import UUID
 
@@ -84,11 +85,16 @@ class FailureAnalysisService:
 
     # ── Public API ──────────────────────────────────────────────
 
-    async def analyze(self, request: AnalysisRequest) -> AnalysisResponse:
+    async def analyze(
+        self,
+        request: AnalysisRequest,
+        user_id: _uuid.UUID | None = None,
+    ) -> AnalysisResponse:
         """Run the full analysis pipeline on the given input.
 
         Args:
             request: The validated analysis request.
+            user_id: Optional user ID for session ownership.
 
         Returns:
             The structured analysis response with session metadata.
@@ -106,6 +112,7 @@ class FailureAnalysisService:
             input_source_type=request.source_type.value,
             input_content=request.content,
             output_format=request.output_format,
+            user_id=user_id,
         )
         session = await self._repository.create(session)
         _logger.info(
@@ -184,6 +191,7 @@ class FailureAnalysisService:
         self,
         request: AnalysisRequest,
         files: list[UploadFile],
+        user_id: _uuid.UUID | None = None,
     ) -> AnalysisResponse:
         """Run analysis with uploaded artifact files.
 
@@ -218,6 +226,7 @@ class FailureAnalysisService:
             input_source_type=request.source_type.value,
             input_content=request.content,
             output_format=request.output_format,
+            user_id=user_id,
         )
         session = await self._repository.create(session)
         _logger.info(
@@ -382,6 +391,7 @@ class FailureAnalysisService:
         self,
         page: int = 1,
         page_size: int = 20,
+        user_id: _uuid.UUID | None = None,
     ) -> tuple[list[AnalysisSessionListItem], int]:
         """List failure analysis sessions with pagination.
 
@@ -391,6 +401,7 @@ class FailureAnalysisService:
         return await self._repository.list_sessions(
             page=page,
             page_size=page_size,
+            user_id=user_id,
         )
 
     async def delete_session(self, session_id: UUID) -> None:

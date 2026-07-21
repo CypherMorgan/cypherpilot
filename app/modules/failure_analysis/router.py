@@ -6,6 +6,7 @@ session results, and listing past sessions.
 
 from __future__ import annotations
 
+import uuid
 from typing import Any
 from uuid import UUID
 
@@ -25,6 +26,8 @@ from structlog import get_logger
 
 from app.domain.models import PaginationMeta, ResponseMeta
 from app.infrastructure.database import get_db
+from app.modules.auth.middleware import get_optional_current_user
+from app.modules.auth.models import User
 from app.modules.failure_analysis.models import (
     AnalysisRequest,
     InputSourceType,
@@ -86,6 +89,7 @@ def _get_service(
 async def analyze_failure(
     request: AnalysisRequest,
     service: FailureAnalysisService = Depends(_get_service),
+    user: User | None = Depends(get_optional_current_user),
     http_request: Request = None,  # type: ignore[assignment]
 ) -> dict[str, Any]:
     """Analyze the given automation failure input."""
@@ -95,7 +99,8 @@ async def analyze_failure(
         content_length=len(request.content),
     )
 
-    result = await service.analyze(request)
+    user_id = uuid.UUID(str(user.id)) if user else None
+    result = await service.analyze(request, user_id=user_id)
 
     response = {
         "data": result.model_dump(mode="json"),
@@ -125,6 +130,7 @@ async def analyze_failure_with_artifacts(
     output_format: str = Form(default="json"),
     artifacts: list[UploadFile] = File(default=[]),
     service: FailureAnalysisService = Depends(_get_service),
+    user: User | None = Depends(get_optional_current_user),
     http_request: Request = None,  # type: ignore[assignment]
 ) -> dict[str, Any]:
     """Analyze a failure with optional uploaded artifact files."""
@@ -158,6 +164,7 @@ async def analyze_failure_with_artifacts(
     result = await service.analyze_with_artifacts(
         request=request,
         files=artifacts,
+        user_id=uuid.UUID(str(user.id)) if user else None,
     )
 
     response = {
@@ -202,10 +209,14 @@ async def list_analysis_sessions(
     page: int = Query(default=1, ge=1, description="Page number (1-indexed)."),
     page_size: int = Query(default=20, ge=1, le=100, description="Items per page."),
     service: FailureAnalysisService = Depends(_get_service),
+    user: User | None = Depends(get_optional_current_user),
     http_request: Request = None,  # type: ignore[assignment]
 ) -> dict[str, Any]:
     """List past failure analysis sessions."""
-    items, total = await service.list_sessions(page=page, page_size=page_size)
+    user_id = uuid.UUID(str(user.id)) if user else None
+    items, total = await service.list_sessions(
+        page=page, page_size=page_size, user_id=user_id,
+    )
 
     has_more = (page * page_size) < total
 

@@ -12,6 +12,7 @@ Orchestrates the end-to-end analysis pipeline:
 from __future__ import annotations
 
 import time
+import uuid as _uuid
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -69,11 +70,16 @@ class RequirementAnalysisService:
 
     # ── Public API ──────────────────────────────────────────────
 
-    async def analyze(self, request: AnalysisRequest) -> AnalysisResponse:
+    async def analyze(
+        self,
+        request: AnalysisRequest,
+        user_id: _uuid.UUID | None = None,
+    ) -> AnalysisResponse:
         """Run the full analysis pipeline on the given input.
 
         Args:
             request: The validated analysis request.
+            user_id: Optional user ID for session ownership.
 
         Returns:
             The structured analysis response with session metadata.
@@ -91,6 +97,7 @@ class RequirementAnalysisService:
             input_source_type=request.source_type.value,
             input_content=request.content,
             output_format=request.output_format,
+            user_id=user_id,
         )
         session = await self._repository.create(session)
         _logger.info(
@@ -208,8 +215,14 @@ class RequirementAnalysisService:
         self,
         page: int = 1,
         page_size: int = 20,
+        user_id: _uuid.UUID | None = None,
     ) -> tuple[list[AnalysisSessionListItem], int]:
         """List requirement analysis sessions with pagination.
+
+        Args:
+            page: 1-indexed page number.
+            page_size: Items per page.
+            user_id: Optional user ID to filter by owner.
 
         Returns:
             Tuple of ``(items, total_count)``.
@@ -217,6 +230,7 @@ class RequirementAnalysisService:
         return await self._repository.list_sessions(
             page=page,
             page_size=page_size,
+            user_id=user_id,
         )
 
     async def delete_session(self, session_id: UUID) -> None:

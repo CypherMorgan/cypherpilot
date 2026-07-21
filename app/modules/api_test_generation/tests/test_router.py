@@ -27,6 +27,7 @@ from app.modules.api_test_generation.router import _get_service, router
 from app.modules.api_test_generation.service import (
     ApiTestGenerationService,
 )
+from app.modules.auth.middleware import get_optional_current_user
 
 
 @pytest.fixture
@@ -73,6 +74,7 @@ async def client(mock_service: AsyncMock) -> AsyncGenerator[AsyncClient, None]:
     app = FastAPI()
     app.include_router(router)
     app.dependency_overrides[_get_service] = lambda: mock_service
+    app.dependency_overrides[get_optional_current_user] = lambda: None
 
     # Register exception handler for NotFoundError (matches app/main.py)
     @app.exception_handler(NotFoundError)

@@ -31,9 +31,10 @@ Schema (evolved for Phase 3 — Requirement Analysis)::
 
 from __future__ import annotations
 
+import uuid
 from typing import Any
 
-from sqlalchemy import JSON, Enum, Integer, String, Text
+from sqlalchemy import JSON, Enum, ForeignKey, Integer, String, Text, Uuid
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.domain.models import AnalysisStatus, AnalysisType
@@ -45,6 +46,24 @@ class AnalysisSession(Base, UUIDMixin, TimestampMixin):
     """An analysis session — root aggregate of the CypherPilot domain."""
 
     __tablename__ = "analysis_sessions"
+
+    # ── Ownership (nullable for backward compatibility) ──────────
+
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        Uuid(),
+        ForeignKey("users.id", ondelete="SET NULL"),
+        nullable=True,
+        default=None,
+        index=True,
+    )
+
+    team_id: Mapped[uuid.UUID | None] = mapped_column(
+        Uuid(),
+        ForeignKey("teams.id", ondelete="SET NULL"),
+        nullable=True,
+        default=None,
+        index=True,
+    )
 
     title: Mapped[str | None] = mapped_column(
         String(255),
