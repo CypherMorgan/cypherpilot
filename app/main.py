@@ -17,6 +17,7 @@ from fastapi.responses import JSONResponse
 from structlog import get_logger
 
 from app.ai.prompt_manager import PromptManager
+from app.ai.providers.gemini import GeminiProvider
 from app.ai.providers.ollama import OllamaProvider
 from app.ai.providers.openrouter import OpenRouterProvider
 from app.ai.registry import ProviderRegistry
@@ -236,6 +237,16 @@ def _make_lifespan(config: AppConfig) -> Callable[..., AsyncIterator[None]]:
                 ),
             )
             registered_providers.append("ollama")
+
+        if config.ai.gemini_api_key:
+            registry.register(
+                "gemini",
+                GeminiProvider(
+                    api_key=config.ai.gemini_api_key,
+                    model=config.ai.gemini_model,
+                ),
+            )
+            registered_providers.append("gemini")
 
         app.state.provider_registry = registry
 

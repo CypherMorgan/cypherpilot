@@ -14,6 +14,7 @@ from fastapi import APIRouter, Request
 from pydantic import BaseModel, Field
 from structlog import get_logger
 
+from app.ai.providers.gemini import GeminiProvider
 from app.ai.providers.ollama import OllamaProvider
 from app.ai.providers.openrouter import OpenRouterProvider
 from app.ai.registry import ProviderRegistry
@@ -165,6 +166,15 @@ def _update_provider_registry(
             OllamaProvider(
                 base_url=ai.ollama_base_url,
                 model=ai.ollama_model,
+            ),
+        )
+
+    if ai.gemini_api_key:
+        registry.register(
+            "gemini",
+            GeminiProvider(
+                api_key=ai.gemini_api_key,
+                model=ai.gemini_model,
             ),
         )
 

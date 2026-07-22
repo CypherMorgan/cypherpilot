@@ -85,6 +85,9 @@ export function SettingsPage() {
       } else if (provider === "ollama") {
         if (baseUrl) update.ollama_base_url = baseUrl;
         if (model) update.ollama_model = model;
+      } else if (provider === "gemini") {
+        if (apiKeyInput) update.gemini_api_key = apiKeyInput;
+        if (model) update.gemini_model = model;
       }
       const result = await updateAiSettings(update);
       setAiSettings(result);
@@ -124,6 +127,7 @@ export function SettingsPage() {
     (provider === "ollama" &&
       (model !== aiSettings?.ollama_model ||
         baseUrl !== aiSettings?.ollama_base_url)) ||
+    (provider === "gemini" && model !== aiSettings?.gemini_model) ||
     apiKeyInput.length > 0;
 
   return (
@@ -158,6 +162,7 @@ export function SettingsPage() {
               <div className="mt-1 flex gap-2">
                 {[
                   { value: "openrouter", label: "OpenRouter" },
+                  { value: "gemini", label: "Google Gemini" },
                   { value: "ollama", label: "Ollama (Local)" },
                 ].map((opt) => (
                   <button
@@ -168,7 +173,9 @@ export function SettingsPage() {
                       setModel(
                         opt.value === "openrouter"
                           ? aiSettings?.openrouter_model || "openai/gpt-4o-mini"
-                          : aiSettings?.ollama_model || "qwen3",
+                          : opt.value === "gemini"
+                            ? aiSettings?.gemini_model || "gemini-2.0-flash"
+                            : aiSettings?.ollama_model || "qwen3",
                       );
                     }}
                     className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-sm transition-colors ${
@@ -207,7 +214,9 @@ export function SettingsPage() {
               <p className="mt-1 text-xs text-muted-foreground">
                 {provider === "openrouter"
                   ? "Full model path from OpenRouter (e.g. openai/gpt-4o-mini)"
-                  : "Local model name from Ollama (e.g. qwen3, llama3)"}
+                  : provider === "gemini"
+                    ? "Gemini model name (e.g. gemini-2.0-flash, gemini-2.5-pro)"
+                    : "Local model name from Ollama (e.g. qwen3, llama3)"}
               </p>
             </div>
 
@@ -255,6 +264,61 @@ export function SettingsPage() {
               </div>
             )}
 
+            {/* API Key (Gemini) */}
+            {provider === "gemini" && (
+              <div>
+                <label
+                  htmlFor="ai-gemini-api-key"
+                  className="text-sm font-medium"
+                >
+                  API Key
+                </label>
+                <div className="mt-1 flex items-center gap-2">
+                  <div className="relative flex-1">
+                    <input
+                      id="ai-gemini-api-key"
+                      type={apiKeyVisible ? "text" : "password"}
+                      value={apiKeyInput}
+                      onChange={(e) => setApiKeyInput(e.target.value)}
+                      placeholder={
+                        aiSettings?.gemini_api_key
+                          ? `${aiSettings.gemini_api_key}`
+                          : "AIza..."
+                      }
+                      className="w-full rounded-lg border bg-background px-3 py-2 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setApiKeyVisible(!apiKeyVisible)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    >
+                      {apiKeyVisible ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+                {aiSettings?.gemini_api_key && !apiKeyInput && (
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Leave blank to keep the current key.
+                  </p>
+                )}
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Get your free key at{" "}
+                  <a
+                    href="https://aistudio.google.com/apikey"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    AI Studio
+                  </a>
+                </p>
+              </div>
+            )}
+
             {/* Base URL (Ollama) */}
             {provider === "ollama" && (
               <div>
@@ -282,6 +346,11 @@ export function SettingsPage() {
             {aiSettings?.openrouter_api_key && provider === "openrouter" && (
               <p className="text-xs text-muted-foreground">
                 Current key: {aiSettings.openrouter_api_key}
+              </p>
+            )}
+            {aiSettings?.gemini_api_key && provider === "gemini" && (
+              <p className="text-xs text-muted-foreground">
+                Current key: {aiSettings.gemini_api_key}
               </p>
             )}
 
