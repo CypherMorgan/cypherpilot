@@ -206,7 +206,7 @@ def _update_provider_registry(
             providers=primary + fallbacks,  # type: ignore[arg-type]
             health_tracker=tracker,
         )
-        registry._providers[active_provider] = resilient  # type: ignore[index]
+        registry._providers[active_provider] = resilient
 
 
 # ── Routes ──────────────────────────────────────────────────────

@@ -284,8 +284,8 @@ def _compute_delay(attempt: int) -> float:
 
     Attempt 0 → ~1s, attempt 1 → ~2s, attempt 2 → ~4s, etc.
     """
-    base = min(_BASE_DELAY_S * (2**attempt), _MAX_DELAY_S)
-    jitter = random.uniform(-_JITTER_RANGE, _JITTER_RANGE) * base
+    base: float = min(_BASE_DELAY_S * (2**attempt), _MAX_DELAY_S)
+    jitter: float = random.uniform(-_JITTER_RANGE, _JITTER_RANGE) * base
     return max(0.1, base + jitter)
 
 
