@@ -10,6 +10,32 @@ interface ChangelogEntry {
 
 const entries: ChangelogEntry[] = [
   {
+    version: "0.5.1",
+    date: "2026-07-23",
+    title: "Provider Resilience & Error Recovery",
+    items: [
+      "Automatic retry with exponential backoff + jitter on transient errors (429, 500, 503)",
+      "Fallback provider chain — if primary fails, tries next configured provider automatically",
+      "Per-provider health tracking — success/failure counts, avg latency, success rate",
+      "Provider Health dashboard in Settings — live stats with status badges and refresh",
+      "Google Gemini provider support — free-tier friendly, configurable from Settings UI",
+      "Better error messages — 'Invalid API key for OpenRouter' instead of generic '500 error'",
+      "GitHub Pages demo mode — browse UI without backend, with 'Continue in Demo Mode' CTA",
+    ],
+  },
+  {
+    version: "0.5.0",
+    date: "2026-07-21",
+    title: "Multi-User & Teams",
+    items: [
+      "User authentication — registration, login, JWT tokens, bcrypt password hashing",
+      "Team management — create teams, invite/remove members, role-based access (owner/admin/member/viewer)",
+      "Session ownership — analysis sessions scoped to users and teams",
+      "Protected routes and API interceptor — automatic token injection",
+      "Teams pages — team list with create dialog, team detail with member management",
+    ],
+  },
+  {
     version: "0.4.9",
     date: "2026-07-19",
     title: "Usability & Consistency",

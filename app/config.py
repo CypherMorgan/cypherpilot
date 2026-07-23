@@ -115,7 +115,7 @@ class AppConfig(BaseSettings):
     """Enable debug mode. Set DEBUG=true."""
 
     app_name: str = "CypherPilot"
-    app_version: str = "0.4.9"
+    app_version: str = "0.5.1"
 
     log_level: str = "INFO"
     """Logging level: DEBUG, INFO, WARNING, ERROR."""

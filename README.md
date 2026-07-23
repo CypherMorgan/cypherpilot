@@ -3,7 +3,7 @@
 **CypherPilot** is an AI-augmented quality engineering platform that helps QA engineers and SDETs analyze requirements, generate API test suites, and diagnose automation failures — using AI as an accelerator, not a crutch.
 
 > Created by **Cypher Morgan**
-![Version](https://img.shields.io/badge/version-0.5.0-blue)
+![Version](https://img.shields.io/badge/version-0.5.1-blue)
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green)
 ![React](https://img.shields.io/badge/React-18-blue)
@@ -23,7 +23,7 @@
 
 See the full [Changelog](./CHANGELOG.md) for the complete release history.
 
-**Latest: v0.5.0** — Multi-User & Teams. [Read more](./CHANGELOG.md#v050--multi-user--teams-2026-07-21).
+**Latest: v0.5.1** — Provider Resilience & Error Recovery. [Read more](./CHANGELOG.md#v051--provider-resilience--error-recovery).
 
 ## Features
 
@@ -268,7 +268,8 @@ uv run ruff check
 | **v0.4.8** | Quality-of-Life Polish — keyboard shortcuts, elapsed timer, session search/filter, dashboard fix, requirement export fix | ✅ Done |
 | **v0.4.9** | Usability & Consistency — AI Provider settings UI, shared export/session-list components, friendlier error messages with retry | ✅ Done |
 | **v0.5.0** | Multi-User & Teams — authentication, JWT tokens, user management, team workspaces, RBAC, session sharing | ✅ Done |
-| **v0.5.x** | Provider Resilience & Reporting — retry/fallback across providers, usage analytics, token cost tracking | 🔜 Planned |
+| **v0.5.1** | Provider Resilience — retry with backoff, fallback provider chain, health dashboard, better error messages | ✅ Done |
+| **v0.5.x** | Provider Resilience & Reporting — usage analytics, token cost tracking, batch analysis | 🔜 Planned |
 | **v0.6.x** | CI/CD Integration & Notifications — webhook/callback support, Slack/email alerts, GitHub/GitLab integration | 🔜 Planned |
 | **v0.7.x** | Trends & Prompt Studio — historical trend analysis, prompt versioning UI, A/B prompt comparison | 🔜 Planned |
 | **v0.8.x** | Plugins & Enterprise — plugin SDK, SSO/SAML, audit logs, team billing | 🔜 Planned |

@@ -4,6 +4,26 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
+## v0.5.1 — Provider Resilience & Error Recovery (2026-07-23)
+
+### Backend
+- **ResilientProvider** — automatic retry with exponential backoff + jitter on transient errors (429, 500, 503), up to 2 retries per provider
+- **Fallback chain** — if primary provider fails, automatically tries the next configured provider (e.g. OpenRouter → Gemini → Ollama)
+- **HealthTracker** — per-provider success/failure counts, average latency, success rate, consecutive failure tracking
+- **Unhealthy provider skipping** — providers with 5+ consecutive failures are temporarily bypassed
+- **Better error messages** — "Invalid API key for OpenRouter" instead of generic "500 error"
+- **Google Gemini provider** — new `GeminiProvider` using the generateContent REST API, free-tier friendly
+- **GET /api/v1/providers/health** — real-time health statistics endpoint
+- **Updated /health endpoint** — now includes provider health summary
+
+### Frontend
+- **Provider Health dashboard** — Settings page shows per-provider status badges, success/failure counts, avg latency, success rate
+- **Gemini in Settings UI** — Google Gemini appears as a provider option with API key input and link to AI Studio
+- **GitHub Pages demo mode** — detect unreachable backend, enter demo mode with "Browse in Demo Mode" CTA on login/register
+- **Refresh button** — manually refresh provider health stats
+
+---
+
 ## v0.5.0 — Multi-User & Teams (2026-07-21)
 
 ### Backend
