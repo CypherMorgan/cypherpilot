@@ -4,6 +4,27 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
+## v0.5.2 — Audit Log & Activity Feed (2026-07-24)
+
+### Backend
+- **AuditLog model** — UUID primary key, user_id, team_id, action, resource_type, resource_id, extra_data (JSONB), ip_address
+- **Alembic migration** — creates `audit_logs` table with indexes on user_id, team_id, action, and created_at
+- **Audit module** — full module with repository, service, router, schemas, and non-blocking helper
+- **GET /api/v1/audit** — paginated audit log endpoint with team, user, and action prefix filtering
+- **Auth audit logging** — register, login, and change_password events are logged
+- **Team audit logging** — team.create, team.invite_member, team.remove_member events
+- **Analysis audit logging** — session.create and session.delete events across all 3 analysis modules
+- **Non-blocking design** — audit failures never break the main request; best-effort fire-and-forget
+
+### Frontend
+- **Activity page** — paginated timeline at `/activity` showing all platform events with action badges
+- **Action labels** — human-readable names for every audit action (e.g. "Login", "Create Team", "Delete Session")
+- **Color-coded badges** — blue for auth, green for sessions, purple for teams
+- **Relative timestamps** — "just now", "5m ago", "2h ago", "Mar 15"
+- **Activity nav item** — visible in the sidebar for all authenticated users
+
+---
+
 ## v0.5.1 — Provider Resilience & Error Recovery (2026-07-23)
 
 ### Backend

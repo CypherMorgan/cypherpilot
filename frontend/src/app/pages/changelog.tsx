@@ -10,6 +10,20 @@ interface ChangelogEntry {
 
 const entries: ChangelogEntry[] = [
   {
+    version: "0.5.2",
+    date: "2026-07-24",
+    title: "Audit Log & Activity Feed",
+    items: [
+      "AuditLog model — tracks user/team actions with resource type, resource ID, extra data, and IP address",
+      "GET /api/v1/audit — paginated endpoint with team, user, and action prefix filtering",
+      "Auth audit logging — register, login, and change_password events are recorded",
+      "Team audit logging — team.create, team.invite_member, team.remove_member events",
+      "Analysis audit logging — session.create and session.delete events across all 3 analysis modules",
+      "Activity page — paginated timeline at /activity with human-readable action labels and color-coded badges",
+      "Non-blocking best-effort design — audit failures never break the main request",
+    ],
+  },
+  {
     version: "0.5.1",
     date: "2026-07-23",
     title: "Provider Resilience & Error Recovery",
