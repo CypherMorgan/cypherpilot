@@ -15,10 +15,11 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.infrastructure.database import get_db
+from app.modules.audit.helpers import log_audit
 from app.modules.auth.middleware import get_current_user
 from app.modules.auth.models import User
 from app.modules.teams.schemas import (
@@ -62,6 +63,8 @@ async def list_my_teams(
 )
 async def create_team(
     body: CreateTeamRequest,
+    request: Request,
+    db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
     service: TeamService = Depends(_get_service),
 ) -> dict[str, Any]:
@@ -72,6 +75,17 @@ async def create_team(
             status_code=status.HTTP_409_CONFLICT,
             detail=str(exc),
         ) from exc
+
+    await log_audit(
+        db,
+        action="team.create",
+        user_id=user.id,
+        team_id=team.id,
+        resource_type="team",
+        resource_id=team.id,
+        metadata={"name": body.name},
+        request=request,
+    )
     return {"data": team.model_dump(mode="json"), "meta": {}}
 
 
@@ -185,6 +199,8 @@ async def delete_team(
 async def invite_member(
     team_id: str,
     body: InviteMemberRequest,
+    request: Request,
+    db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
     service: TeamService = Depends(_get_service),
 ) -> dict[str, Any]:
@@ -209,6 +225,15 @@ async def invite_member(
             detail=str(exc),
         ) from exc
 
+    await log_audit(
+        db,
+        action="team.invite_member",
+        user_id=user.id,
+        team_id=tid,
+        resource_type="team_member",
+        metadata={"username": body.username, "role": body.role.value if hasattr(body.role, 'value') else str(body.role)},
+        request=request,
+    )
     return {"data": member.model_dump(mode="json"), "meta": {}}
 
 
@@ -253,6 +278,8 @@ async def update_member_role(
 async def remove_member(
     team_id: str,
     user_id: str,
+    request: Request,
+    db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
     service: TeamService = Depends(_get_service),
 ) -> None:
@@ -291,3 +318,13 @@ async def remove_member(
     removed = await service.remove_member(tid, uid)
     if not removed:
         raise HTTPException(status_code=404, detail="Member not found")
+
+    await log_audit(
+        db,
+        action="team.remove_member",
+        user_id=user.id,
+        team_id=tid,
+        resource_type="team_member",
+        metadata={"removed_user_id": str(uid)},
+        request=request,
+    )

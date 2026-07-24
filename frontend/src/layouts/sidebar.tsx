@@ -8,6 +8,7 @@ import {
   Megaphone,
   Users,
   FileJson,
+  Activity,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -30,6 +31,7 @@ interface NavItem {
 const mainNav: NavItem[] = [
   { label: "Dashboard", path: "/", icon: LayoutDashboard },
   { label: "Teams", path: "/teams", icon: Users },
+  { label: "Activity", path: "/activity", icon: Activity },
 ];
 
 const moduleNav: NavItem[] = [

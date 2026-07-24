@@ -10,7 +10,9 @@ Adding a new model:
 """
 
 from app.infrastructure.models.analysis_session import AnalysisSession
+from app.infrastructure.models.audit_log import AuditLog
 
 __all__ = [
     "AnalysisSession",
+    "AuditLog",
 ]

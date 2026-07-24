@@ -120,6 +120,17 @@ class FailureAnalysisService:
             session_id=str(session.id),
         )
 
+        # Audit log
+        from app.modules.audit.helpers import log_audit
+        await log_audit(
+            self._repository._session,
+            action="session.create",
+            user_id=user_id,
+            resource_type="session",
+            resource_id=session.id,
+            metadata={"module": "failure_analysis", "title": session.title},
+        )
+
         try:
             # 2. Get the AI provider
             provider = self._provider_registry.get(self._active_provider)
@@ -421,6 +432,16 @@ class FailureAnalysisService:
                 f"Analysis session not found: {session_id}",
                 detail={"session_id": str(session_id)},
             )
+
+        # Audit log
+        from app.modules.audit.helpers import log_audit
+        await log_audit(
+            self._repository._session,
+            action="session.delete",
+            resource_type="session",
+            resource_id=session_id,
+            metadata={"module": "failure_analysis"},
+        )
 
         # Clean up artifact files (best-effort — never throw)
         try:

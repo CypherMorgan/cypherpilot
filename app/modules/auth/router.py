@@ -15,6 +15,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.infrastructure.database import get_db
+from app.modules.audit.helpers import log_audit
 from app.modules.auth.config import AuthConfig
 from app.modules.auth.middleware import get_current_user
 from app.modules.auth.models import User
@@ -52,16 +53,29 @@ async def _get_auth_service(
 )
 async def register(
     body: RegisterRequest,
+    request: Request,
+    db: Annotated[AsyncSession, Depends(get_db)],
     auth_service: Annotated[AuthService, Depends(_get_auth_service)],
 ) -> TokenResponse:
     """Create a new user account and return a JWT access token."""
     try:
-        return await auth_service.register(body)
+        result = await auth_service.register(body)
     except ValueError as exc:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=str(exc),
         ) from exc
+
+    await log_audit(
+        db,
+        action="auth.register",
+        user_id=result.user.id,
+        resource_type="user",
+        resource_id=result.user.id,
+        metadata={"username": result.user.username},
+        request=request,
+    )
+    return result
 
 
 @router.post(
@@ -71,16 +85,29 @@ async def register(
 )
 async def login(
     body: LoginRequest,
+    request: Request,
+    db: Annotated[AsyncSession, Depends(get_db)],
     auth_service: Annotated[AuthService, Depends(_get_auth_service)],
 ) -> TokenResponse:
     """Authenticate with username/email and password, receive a JWT."""
     try:
-        return await auth_service.login(body.username, body.password)
+        result = await auth_service.login(body.username, body.password)
     except ValueError as exc:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=str(exc),
         ) from exc
+
+    await log_audit(
+        db,
+        action="auth.login",
+        user_id=result.user.id,
+        resource_type="user",
+        resource_id=result.user.id,
+        metadata={"username": result.user.username},
+        request=request,
+    )
+    return result
 
 
 # ── Authenticated endpoints ─────────────────────────────────────
@@ -106,6 +133,8 @@ async def me(
 async def change_password(
     body: ChangePasswordRequest,
     user: Annotated[User, Depends(get_current_user)],
+    request: Request,
+    db: Annotated[AsyncSession, Depends(get_db)],
     auth_service: Annotated[AuthService, Depends(_get_auth_service)],
 ) -> None:
     """Change the authenticated user's password."""
@@ -119,3 +148,12 @@ async def change_password(
 
     user.hashed_password = AuthService.hash_password(body.new_password)
     await auth_service._session.commit()
+
+    await log_audit(
+        db,
+        action="auth.change_password",
+        user_id=user.id,
+        resource_type="user",
+        resource_id=user.id,
+        request=request,
+    )

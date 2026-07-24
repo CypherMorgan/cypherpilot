@@ -36,6 +36,9 @@ from app.infrastructure.database import DatabaseManager
 from app.infrastructure.models import (  # noqa: F401 — registers models on Base.metadata
     AnalysisSession,
 )
+from app.infrastructure.models.audit_log import (
+    AuditLog,  # noqa: F401 — registers AuditLog on Base.metadata
+)
 from app.logging_ import configure_logging
 from app.middleware.request_id import RequestIDMiddleware
 from app.modules.auth.config import AuthConfig

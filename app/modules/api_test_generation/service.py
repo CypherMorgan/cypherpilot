@@ -130,6 +130,17 @@ class ApiTestGenerationService:
                 endpoint_count=len(endpoints),
             )
 
+            # Audit log
+            from app.modules.audit.helpers import log_audit
+            await log_audit(
+                self._repository._session,
+                action="session.create",
+                user_id=user_id,
+                resource_type="session",
+                resource_id=session.id,
+                metadata={"module": "api_test_generation", "title": session.title, "endpoint_count": len(endpoints)},
+            )
+
 
             # 4. Generate scaffolding (programmatic)
             conftest_content = self._pytest_gen.generate_conftest(
@@ -352,6 +363,16 @@ class ApiTestGenerationService:
                 f"Analysis session not found: {session_id}",
                 detail={"session_id": str(session_id)},
             )
+
+        # Audit log
+        from app.modules.audit.helpers import log_audit
+        await log_audit(
+            self._repository._session,
+            action="session.delete",
+            resource_type="session",
+            resource_id=session_id,
+            metadata={"module": "api_test_generation"},
+        )
 
     async def download_zip(self, session_id: UUID) -> bytes | None:
         """Get the ZIP archive bytes for a completed session.

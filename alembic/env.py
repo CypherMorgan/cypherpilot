@@ -23,6 +23,7 @@ from app.infrastructure.database import Base
 # Import all models so they register on Base.metadata for autogenerate.
 # Each model module must be listed here or imported in models/__init__.py.
 from app.infrastructure.models import AnalysisSession  # noqa: F401
+from app.infrastructure.models.audit_log import AuditLog  # noqa: F401
 from app.modules.auth.models import User  # noqa: F401
 from app.modules.teams.models import Team, TeamMember  # noqa: F401
 
