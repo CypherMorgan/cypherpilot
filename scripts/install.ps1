@@ -23,7 +23,7 @@ param([switch]$Uninstall)
 $RepoUrl     = "https://github.com/CypherMorgan/cypherpilot.git"
 $Branch      = "master"
 $InstallDir  = if ($env:CYPHERPILOT_HOME) { $env:CYPHERPILOT_HOME } else { "$env:USERPROFILE\.cypherpilot" }
-$Version     = "0.4.9"
+$Version     = "0.5.2"
 
 # ── Colors (PowerShell 5+ compatible) ───────────────────────────────────────
 $Host.UI.RawUI.ForegroundColor = "White"
