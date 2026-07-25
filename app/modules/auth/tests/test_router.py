@@ -32,7 +32,7 @@ class TestRegisterEndpoint:
         assert "access_token" in data
         assert data["user"]["username"] == "testuser"
         assert data["user"]["email"] == "test@example.com"
-        assert data["user"]["role"] == "user"
+        assert data["user"]["role"] == "admin"  # first user gets admin
         assert data["token_type"] == "bearer"
 
     @pytest.mark.asyncio
