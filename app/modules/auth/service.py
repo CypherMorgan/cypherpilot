@@ -108,6 +108,7 @@ class AuthService:
     async def register(self, data: RegisterRequest) -> TokenResponse:
         """Register a new user and return a JWT token.
 
+        The first user to register automatically becomes admin.
         Raises ValueError if username or email is already taken.
         """
         # Check uniqueness
@@ -116,13 +117,17 @@ class AuthService:
         if await self._repo.email_exists(data.email):
             raise ValueError(f"Email '{data.email}' is already registered")
 
+        # First user becomes admin automatically
+        user_count = await self._repo.count()
+        role = UserRole.ADMIN if user_count == 0 else UserRole.USER
+
         # Create user
         user = User(
             username=data.username,
             email=data.email,
             display_name=data.display_name,
             hashed_password=self.hash_password(data.password),
-            role=UserRole.USER,
+            role=role,
             is_active=True,
         )
         user = await self._repo.create(user)
@@ -131,6 +136,7 @@ class AuthService:
             "User registered",
             user_id=str(user.id),
             username=user.username,
+            role=user.role.value,
         )
 
         # Issue token
@@ -190,3 +196,34 @@ class AuthService:
         if user is None:
             return None
         return UserResponse.model_validate(user)
+
+    async def update_role(
+        self, user_id: Any, new_role: UserRole
+    ) -> User:
+        """Update a user's role. Returns the updated user.
+
+        Raises ValueError if user not found.
+        """
+        user = await self._repo.get(user_id)
+        if user is None:
+            raise ValueError("User not found")
+
+        user.role = new_role
+        await self._session.commit()
+        await self._session.refresh(user)
+
+        _logger.info(
+            "User role updated",
+            user_id=str(user.id),
+            username=user.username,
+            new_role=new_role.value,
+        )
+        return user
+
+    async def list_users(
+        self, *, page: int = 1, page_size: int = 20
+    ) -> tuple[list[User], int]:
+        """List all users with pagination. Returns (users, total_count)."""
+        return await self._repo.list(
+            page=page, page_size=page_size, order_by="created_at"
+        )

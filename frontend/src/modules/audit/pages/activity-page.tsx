@@ -43,6 +43,8 @@ function describeEntry(entry: AuditLogEntry): string {
       return `Signed in as ${meta.username ?? "user"}`;
     case "auth.change_password":
       return "Changed their password";
+    case "auth.role_change":
+      return `Changed role from ${meta.old_role ?? "?"} to ${meta.new_role ?? "?"}`;
     case "team.create":
       return `Created team "${meta.name ?? "unknown"}"`;
     case "team.invite_member":

@@ -80,21 +80,43 @@ class TestRegister:
     """Tests for user registration."""
 
     @pytest.mark.asyncio
-    async def test_register_success(
+    async def test_register_first_user_is_admin(
         self, auth_service: AuthService
     ) -> None:
         data = RegisterRequest(
-            username="newuser",
-            email="new@example.com",
+            username="firstuser",
+            email="first@example.com",
             password="password123",
         )
         result = await auth_service.register(data)
 
         assert result.access_token is not None
-        assert result.user.username == "newuser"
-        assert result.user.email == "new@example.com"
-        assert result.user.role == "user"
+        assert result.user.username == "firstuser"
+        assert result.user.email == "first@example.com"
+        assert result.user.role == "admin"
         assert result.user.is_active is True
+
+    @pytest.mark.asyncio
+    async def test_register_second_user_is_user(
+        self, auth_service: AuthService
+    ) -> None:
+        # First user gets admin
+        await auth_service.register(
+            RegisterRequest(
+                username="adminuser",
+                email="admin@example.com",
+                password="password123",
+            )
+        )
+        # Second user gets regular user role
+        data = RegisterRequest(
+            username="regularuser",
+            email="regular@example.com",
+            password="password123",
+        )
+        result = await auth_service.register(data)
+
+        assert result.user.role == "user"
 
     @pytest.mark.asyncio
     async def test_register_duplicate_username(
@@ -235,3 +257,60 @@ class TestGetUser:
     ) -> None:
         user = await auth_service.get_user(uuid.uuid4())
         assert user is None
+
+
+class TestUpdateRole:
+    """Tests for user role updates."""
+
+    @pytest.mark.asyncio
+    async def test_update_role(
+        self, auth_service: AuthService
+    ) -> None:
+        from app.modules.auth.models import UserRole
+
+        result = await auth_service.register(
+            RegisterRequest(
+                username="roletest",
+                email="role@example.com",
+                password="password123",
+            )
+        )
+        user = await auth_service.update_role(result.user.id, UserRole.VIEWER)
+        assert user.role == UserRole.VIEWER
+
+    @pytest.mark.asyncio
+    async def test_update_role_nonexistent_user(
+        self, auth_service: AuthService
+    ) -> None:
+        from app.modules.auth.models import UserRole
+
+        with pytest.raises(ValueError, match="User not found"):
+            await auth_service.update_role(uuid.uuid4(), UserRole.ADMIN)
+
+
+class TestListUsers:
+    """Tests for listing users."""
+
+    @pytest.mark.asyncio
+    async def test_list_users(
+        self, auth_service: AuthService
+    ) -> None:
+        # Register two users
+        await auth_service.register(
+            RegisterRequest(
+                username="listuser1",
+                email="list1@example.com",
+                password="password123",
+            )
+        )
+        await auth_service.register(
+            RegisterRequest(
+                username="listuser2",
+                email="list2@example.com",
+                password="password123",
+            )
+        )
+
+        users, total = await auth_service.list_users(page=1, page_size=10)
+        assert total == 2
+        assert len(users) == 2

@@ -9,6 +9,7 @@ import {
   Users,
   FileJson,
   Activity,
+  Shield,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -20,6 +21,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { UserMenu } from "@/components/user-menu";
+import { useAuth } from "@/hooks/use-auth";
 
 interface NavItem {
   label: string;
@@ -32,6 +34,10 @@ const mainNav: NavItem[] = [
   { label: "Dashboard", path: "/", icon: LayoutDashboard },
   { label: "Teams", path: "/teams", icon: Users },
   { label: "Activity", path: "/activity", icon: Activity },
+];
+
+const adminNav: NavItem[] = [
+  { label: "Users", path: "/users", icon: Shield },
 ];
 
 const moduleNav: NavItem[] = [
@@ -51,6 +57,9 @@ interface SidebarProps {
 }
 
 export function Sidebar({ collapsed }: SidebarProps) {
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
+
   const renderNavItems = (items: NavItem[]) =>
     items.map((item) => (
       <Tooltip key={item.path} delayDuration={collapsed ? 100 : 1000}>
@@ -112,6 +121,30 @@ export function Sidebar({ collapsed }: SidebarProps) {
       {/* Navigation */}
       <nav className="flex flex-1 flex-col gap-1 p-3">
         <div className="flex flex-col gap-1">{renderNavItems(mainNav)}</div>
+
+        {isAdmin && (
+          <>
+            {!collapsed && (
+              <>
+                <div className="py-2">
+                  <Separator className="bg-sidebar-border" />
+                </div>
+                <p className="px-3 text-xs font-medium text-sidebar-muted-foreground">
+                  Admin
+                </p>
+                <div className="mt-1 flex flex-col gap-1">
+                  {renderNavItems(adminNav)}
+                </div>
+              </>
+            )}
+            {collapsed && (
+              <div className="py-2">
+                <Separator className="bg-sidebar-border" />
+              </div>
+            )}
+            {collapsed && <div className="flex flex-col gap-1">{renderNavItems(adminNav)}</div>}
+          </>
+        )}
 
         {!collapsed && (
           <>

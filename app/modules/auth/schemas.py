@@ -53,6 +53,16 @@ class ChangePasswordRequest(BaseModel):
     )
 
 
+class UpdateUserRoleRequest(BaseModel):
+    """PATCH /auth/users/{user_id}/role"""
+
+    role: str = Field(
+        ...,
+        description="New role: admin, user, viewer",
+        pattern=r"^(admin|user|viewer)$",
+    )
+
+
 # ── Response schemas ────────────────────────────────────────────
 
 
@@ -76,3 +86,12 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: UserResponse
+
+
+class UserListResponse(BaseModel):
+    """Paginated list of users."""
+
+    users: list[UserResponse]
+    total: int
+    page: int
+    page_size: int

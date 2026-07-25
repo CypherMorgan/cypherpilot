@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 
 from app.infrastructure.repository import BaseRepository
 from app.modules.auth.models import User
@@ -12,6 +12,12 @@ class UserRepository(BaseRepository[User]):
     """Repository for User model."""
 
     model_class = User
+
+    async def count(self) -> int:
+        """Return total number of users."""
+        stmt = select(func.count()).select_from(self.model_class)
+        result = await self._session.execute(stmt)
+        return result.scalar() or 0
 
     async def get_by_username(self, username: str) -> User | None:
         """Find a user by username (case-insensitive)."""

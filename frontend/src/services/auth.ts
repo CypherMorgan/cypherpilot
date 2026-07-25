@@ -1,4 +1,4 @@
-/** Auth API calls — register, login, profile. */
+/** Auth API calls — register, login, profile, admin user management. */
 
 import { apiClient } from "@/services/api-client";
 
@@ -32,6 +32,13 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface UserListResponse {
+  users: User[];
+  total: number;
+  page: number;
+  page_size: number;
+}
+
 // ── Functions ──────────────────────────────────────────────────
 
 export async function register(data: RegisterRequest): Promise<TokenResponse> {
@@ -57,4 +64,27 @@ export async function changePassword(
     current_password: currentPassword,
     new_password: newPassword,
   });
+}
+
+// ── Admin functions ────────────────────────────────────────────
+
+export async function listUsers(
+  page = 1,
+  pageSize = 20,
+): Promise<UserListResponse> {
+  const response = await apiClient.get<UserListResponse>("/auth/users", {
+    params: { page, page_size: pageSize },
+  });
+  return response.data;
+}
+
+export async function updateUserRole(
+  userId: string,
+  role: string,
+): Promise<User> {
+  const response = await apiClient.patch<User>(
+    `/auth/users/${userId}/role`,
+    { role },
+  );
+  return response.data;
 }

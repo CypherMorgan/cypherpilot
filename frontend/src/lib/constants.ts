@@ -17,6 +17,7 @@ export const ROUTES = {
   SETTINGS: "/settings",
   CHANGELOG: "/changelog",
   ACTIVITY: "/activity",
+  USERS: "/users",
   TEAMS: "/teams",
   TEAM_DETAIL: "/teams/:teamId",
   LOGIN: "/login",
