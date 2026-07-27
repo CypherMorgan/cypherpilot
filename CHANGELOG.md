@@ -4,6 +4,27 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
+## v0.5.3 — Analysis Comparison (2026-07-27)
+
+### Backend
+- **Comparison module** — new `app/modules/comparison/` with schemas, service, and router
+- **POST /api/v1/compare** — compare two completed analysis sessions of the same type
+- **GET /api/v1/compare/sessions** — list sessions available for comparison, filterable by type
+- **Structured diffs** — item-by-item comparison by ID: added, removed, changed, unchanged
+- **Section-aware comparison** — failure analysis compares root_causes, fixes, components, tests; requirement analysis compares test cases, risks, edge cases, etc.
+- **Metadata comparison** — provider, model, token count, latency differences highlighted
+- **Validation** — sessions must be same type, both completed, different IDs
+
+### Frontend
+- **Compare page** at `/compare` — select two sessions and view side-by-side diffs
+- **Session picker** — filterable by analysis type, card-based selection
+- **Section diffs** — expandable sections with added/removed/changed counts
+- **Side-by-side changed items** — diff view for modified items in each section
+- **Summary comparison** — side-by-side summary text for quick overview
+- **Compare nav item** — visible in sidebar for all users
+
+---
+
 ## v0.5.2 — Audit Log & Activity Feed (2026-07-24)
 
 ### Backend

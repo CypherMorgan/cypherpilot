@@ -10,6 +10,7 @@ import {
   FileJson,
   Activity,
   Shield,
+  GitCompareArrows,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -34,6 +35,7 @@ const mainNav: NavItem[] = [
   { label: "Dashboard", path: "/", icon: LayoutDashboard },
   { label: "Teams", path: "/teams", icon: Users },
   { label: "Activity", path: "/activity", icon: Activity },
+  { label: "Compare", path: "/compare", icon: GitCompareArrows },
 ];
 
 const adminNav: NavItem[] = [

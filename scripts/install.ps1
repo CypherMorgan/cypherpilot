@@ -23,7 +23,7 @@ param([switch]$Uninstall)
 $RepoUrl     = "https://github.com/CypherMorgan/cypherpilot.git"
 $Branch      = "master"
 $InstallDir  = if ($env:CYPHERPILOT_HOME) { $env:CYPHERPILOT_HOME } else { "$env:USERPROFILE\.cypherpilot" }
-$Version     = "0.5.2"
+$Version     = "0.5.3"
 
 # ── Colors (PowerShell 5+ compatible) ───────────────────────────────────────
 $Host.UI.RawUI.ForegroundColor = "White"
@@ -53,7 +53,7 @@ function Test-Command($cmd) {
 function Install-CypherPilot {
     Write-Host ""
     Write-Host "╔══════════════════════════════════════════════════╗" -ForegroundColor White
-    Write-Host "║        CypherPilot v$Version — Installer           ║" -ForegroundColor White
+    Write-Host "║        CypherPilot v$Version — Installer         ║" -ForegroundColor White
     Write-Host "╚══════════════════════════════════════════════════╝" -ForegroundColor White
     Write-Host ""
 
@@ -184,7 +184,7 @@ pause
     # ── Summary ─────────────────────────────────────────────────────────────
     Write-Host ""
     Write-Host "╔══════════════════════════════════════════════════╗" -ForegroundColor White
-    Write-Host "║          CypherPilot v$Version installed!           ║" -ForegroundColor White
+    Write-Host "║          CypherPilot v$Version installed!        ║" -ForegroundColor White
     Write-Host "╚══════════════════════════════════════════════════╝" -ForegroundColor White
     Write-Host ""
     Write-Host "  Install path:     $InstallDir" -ForegroundColor White
@@ -206,7 +206,7 @@ pause
 function Uninstall-CypherPilot {
     Write-Host ""
     Write-Host "╔══════════════════════════════════════════════════╗" -ForegroundColor White
-    Write-Host "║         CypherPilot — Uninstall                       ║" -ForegroundColor White
+    Write-Host "║         CypherPilot — Uninstall                  ║" -ForegroundColor White
     Write-Host "╚══════════════════════════════════════════════════╝" -ForegroundColor White
     Write-Host ""
 

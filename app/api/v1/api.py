@@ -15,6 +15,7 @@ from app.api.v1.settings import router as settings_router
 from app.modules.api_test_generation.router import router as api_test_generation_router
 from app.modules.audit.router import router as audit_router
 from app.modules.auth.router import router as auth_router
+from app.modules.comparison.router import router as comparison_router
 from app.modules.failure_analysis.router import (
     router as failure_analysis_router,
 )
@@ -35,3 +36,4 @@ router.include_router(providers_router)
 router.include_router(requirement_analysis_router)
 router.include_router(api_test_generation_router)
 router.include_router(failure_analysis_router)
+router.include_router(comparison_router)

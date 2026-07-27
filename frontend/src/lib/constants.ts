@@ -1,6 +1,6 @@
 /** Application-wide constants */
 export const APP_NAME = "CypherPilot";
-export const APP_VERSION = "0.5.2";
+export const APP_VERSION = "0.5.3";
 
 /** Set to "true" at build time for GitHub Pages deployment (no backend) */
 export const IS_PREVIEW = import.meta.env.VITE_PREVIEW_ONLY === "true";
@@ -17,6 +17,7 @@ export const ROUTES = {
   SETTINGS: "/settings",
   CHANGELOG: "/changelog",
   ACTIVITY: "/activity",
+  COMPARE: "/compare",
   USERS: "/users",
   TEAMS: "/teams",
   TEAM_DETAIL: "/teams/:teamId",

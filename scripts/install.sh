@@ -28,7 +28,7 @@ set -euo pipefail
 REPO_URL="https://github.com/CypherMorgan/cypherpilot.git"
 REPO_BRANCH="master"
 INSTALL_DIR="${CYPHERPILOT_HOME:-$HOME/.cypherpilot}"
-CYPHERPILOT_VERSION="0.5.2"
+CYPHERPILOT_VERSION="0.5.3"
 
 # Colors for output
 RED='\033[0;31m'
@@ -76,7 +76,7 @@ trap cleanup EXIT
 do_install() {
   echo ""
   echo "${BOLD}╔══════════════════════════════════════════════════╗${NC}"
-  echo "${BOLD}║        CypherPilot v${CYPHERPILOT_VERSION} — Installer           ║${NC}"
+  echo "${BOLD}║ CypherPilot v${CYPHERPILOT_VERSION} — Installer  ║${NC}"
   echo "${BOLD}╚══════════════════════════════════════════════════╝${NC}"
   echo ""
 
@@ -241,7 +241,7 @@ SCRIPT
   # ── Summary ──────────────────────────────────────────────────────────────
   echo ""
   echo "${BOLD}╔══════════════════════════════════════════════════╗${NC}"
-  echo "${BOLD}║          CypherPilot v${CYPHERPILOT_VERSION} installed!           ║${NC}"
+  echo "${BOLD}║  CypherPilot v${CYPHERPILOT_VERSION} installed!  ║${NC}"
   echo "${BOLD}╚══════════════════════════════════════════════════╝${NC}"
   echo ""
   echo "  ${BOLD}Install path:${NC}     $INSTALL_DIR"
@@ -267,7 +267,7 @@ SCRIPT
 do_uninstall() {
   echo ""
   echo "${BOLD}╔══════════════════════════════════════════════════╗${NC}"
-  echo "${BOLD}║         CypherPilot — Uninstall                       ║${NC}"
+  echo "${BOLD}║         CypherPilot — Uninstall                  ║${NC}"
   echo "${BOLD}╚══════════════════════════════════════════════════╝${NC}"
   echo ""
 

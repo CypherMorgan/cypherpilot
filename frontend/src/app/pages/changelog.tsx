@@ -10,6 +10,20 @@ interface ChangelogEntry {
 
 const entries: ChangelogEntry[] = [
   {
+    version: "0.5.3",
+    date: "2026-07-27",
+    title: "Analysis Comparison",
+    items: [
+      "Compare two analysis sessions side by side with structured diffs",
+      "Session picker — filter by analysis type, select two sessions to compare",
+      "Section-by-section diffs — added, removed, changed, and unchanged items",
+      "Failure analysis comparison — root causes, fixes, components, test failures",
+      "Requirement analysis comparison — test cases, risks, edge cases, missing requirements",
+      "Metadata comparison — provider, model, token count, latency differences",
+      "Compare page accessible from sidebar for all users",
+    ],
+  },
+  {
     version: "0.5.2",
     date: "2026-07-24",
     title: "Audit Log & Activity Feed",
