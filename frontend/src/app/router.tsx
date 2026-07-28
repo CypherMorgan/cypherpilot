@@ -21,6 +21,7 @@ import { ApiTestGenerationPage } from "@/modules/api-test-generation/pages/gener
 import { ApiTestSessionDetailPage } from "@/modules/api-test-generation/pages/session-detail-page";
 import { ApiTestSessionsPage } from "@/modules/api-test-generation/pages/sessions-page";
 import { FailureAnalysisPage } from "@/modules/failure-analysis/pages/analysis-page";
+import { BatchAnalysisPage } from "@/modules/failure-analysis/pages/batch-analysis-page";
 import { FailureSessionsPage } from "@/modules/failure-analysis/pages/sessions-page";
 import { FailureSessionDetailPage } from "@/modules/failure-analysis/pages/session-detail-page";
 
@@ -70,6 +71,7 @@ const router = createBrowserRouter(
             { path: "api-tests/sessions/:sessionId", element: <ApiTestSessionDetailPage /> },
             // Failure Analysis module
             { path: "failures/analyze", element: <FailureAnalysisPage /> },
+            { path: "failures/batch-analyze", element: <BatchAnalysisPage /> },
             { path: "failures/sessions", element: <FailureSessionsPage /> },
             { path: "failures/sessions/:sessionId", element: <FailureSessionDetailPage /> },
             { path: "*", element: <NotFoundPage /> },

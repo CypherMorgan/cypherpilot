@@ -5,6 +5,8 @@ import type {
   AnalysisRequest,
   AnalysisResponse,
   AnalysisSessionListItem,
+  BatchAnalysisRequest,
+  BatchAnalysisResponse,
 } from "@/modules/failure-analysis/types";
 
 interface ApiSuccessResponse<T> {
@@ -97,4 +99,16 @@ export async function deleteFailureSession(
   sessionId: string,
 ): Promise<void> {
   await apiClient.delete(`/failures/sessions/${sessionId}`);
+}
+
+/**
+ * Submit multiple failure inputs for batch AI-powered analysis.
+ */
+export async function batchAnalyzeFailures(
+  request: BatchAnalysisRequest,
+): Promise<BatchAnalysisResponse> {
+  const response = await apiClient.post<
+    ApiSuccessResponse<BatchAnalysisResponse>
+  >("/failures/batch-analyze", request);
+  return response.data.data;
 }

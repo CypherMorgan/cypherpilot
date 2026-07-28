@@ -50,6 +50,9 @@ from app.modules.failure_analysis.models import (
     AnalysisResponse,
     AnalysisSessionListItem,
     ArtifactUpload,
+    BatchAnalysisRequest,
+    BatchAnalysisResponse,
+    BatchResultItem,
     FailureAnalysisResult,
 )
 from app.modules.failure_analysis.repository import (
@@ -197,6 +200,78 @@ class FailureAnalysisService:
                 f"Failure analysis failed: {error_msg}",
                 detail={"session_id": str(session.id)},
             ) from exc
+
+    # ── Batch Analysis ──────────────────────────────────────────
+
+    async def batch_analyze(
+        self,
+        request: BatchAnalysisRequest,
+        user_id: _uuid.UUID | None = None,
+    ) -> BatchAnalysisResponse:
+        """Analyze multiple failure inputs in a single request.
+
+        Each input is processed sequentially through the full AI analysis
+        pipeline. A ``batch_id`` UUID is generated server-side to group
+        all resulting sessions.
+        """
+        batch_id: str = str(_uuid.uuid4())
+        results: list[BatchResultItem] = []
+
+        for idx, item in enumerate(request.inputs):
+            single_request = AnalysisRequest(
+                content=item.content,
+                source_type=item.source_type,
+                title=item.title,
+                context=item.context,
+                output_format="json",
+            )
+            try:
+                response: AnalysisResponse = await self.analyze(
+                    single_request,
+                    user_id=user_id,
+                )
+                # Tag the session with the batch_id (store in config JSON on session)
+                await self._tag_session_with_batch_id(
+                    response.session_id,
+                    batch_id,
+                )
+                results.append(
+                    BatchResultItem(
+                        index=idx,
+                        session_id=response.session_id,
+                        status="completed",
+                        result=response.result,
+                        error=None,
+                        provider=response.provider,
+                        model=response.model,
+                        total_tokens=response.total_tokens,
+                        latency_ms=response.latency_ms,
+                    )
+                )
+            except Exception as exc:
+                results.append(
+                    BatchResultItem(
+                        index=idx,
+                        session_id=_uuid.uuid4(),  # placeholder
+                        status="failed",
+                        result=None,
+                        error=str(exc),
+                        provider=None,
+                        model=None,
+                        total_tokens=0,
+                        latency_ms=0,
+                    )
+                )
+
+        completed = sum(1 for r in results if r.status == "completed")
+        failed = sum(1 for r in results if r.status == "failed")
+        return BatchAnalysisResponse(
+            batch_id=batch_id,
+            total=len(request.inputs),
+            completed=completed,
+            failed=failed,
+            results=results,
+        )
 
     async def analyze_with_artifacts(
         self,
@@ -454,6 +529,22 @@ class FailureAnalysisService:
             )
 
     # ── Private helpers ─────────────────────────────────────────
+
+    async def _tag_session_with_batch_id(
+        self,
+        session_id: _uuid.UUID,
+        batch_id: str,
+    ) -> None:
+        """Tag an existing session with a batch_id in its config JSON."""
+        session = await self._repository.get(session_id)
+        if session is None:
+            return
+        cfg: dict[str, object] = dict(session.config or {})
+        cfg["batch_id"] = batch_id
+        await self._repository.update(
+            session_id,
+            {"config": cfg},
+        )
 
     async def _call_provider(
         self,

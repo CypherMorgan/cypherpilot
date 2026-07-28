@@ -127,3 +127,36 @@ export interface AnalysisSessionListItem {
   updated_at: string;
   input_summary?: string | null;
 }
+
+// ── Batch Analysis ─────────────────────────────────────────────────
+
+export interface BatchInputItem {
+  content: string;
+  source_type?: InputSourceType;
+  title?: string | null;
+  context?: string | null;
+}
+
+export interface BatchAnalysisRequest {
+  inputs: BatchInputItem[];
+}
+
+export interface BatchResultItem {
+  index: number;
+  session_id: string;
+  status: "completed" | "failed";
+  result?: FailureAnalysisResult | null;
+  error?: string | null;
+  provider?: string | null;
+  model?: string | null;
+  total_tokens?: number;
+  latency_ms?: number;
+}
+
+export interface BatchAnalysisResponse {
+  batch_id: string;
+  total: number;
+  completed: number;
+  failed: number;
+  results: BatchResultItem[];
+}

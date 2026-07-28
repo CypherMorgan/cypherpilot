@@ -1,10 +1,11 @@
 /** TanStack Query hooks for the Failure Analysis module. */
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { AnalysisRequest } from "@/modules/failure-analysis/types";
+import type { AnalysisRequest, BatchAnalysisRequest } from "@/modules/failure-analysis/types";
 import {
   analyzeFailure,
   analyzeFailureWithArtifacts,
+  batchAnalyzeFailures,
   getFailureSession,
   listFailureSessions,
   deleteFailureSession,
@@ -88,6 +89,20 @@ export function useDeleteFailureSession() {
     onSuccess: (_data, sessionId) => {
       queryClient.invalidateQueries({ queryKey: FAILURE_KEYS.sessions() });
       queryClient.removeQueries({ queryKey: FAILURE_KEYS.session(sessionId) });
+    },
+  });
+}
+
+/**
+ * Submit multiple failure inputs for batch analysis.
+ */
+export function useBatchAnalyzeFailures() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (request: BatchAnalysisRequest) => batchAnalyzeFailures(request),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: FAILURE_KEYS.sessions() });
     },
   });
 }

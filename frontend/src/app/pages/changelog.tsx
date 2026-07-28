@@ -10,6 +10,19 @@ interface ChangelogEntry {
 
 const entries: ChangelogEntry[] = [
   {
+    version: "0.5.4",
+    date: "2026-07-28",
+    title: "Batch Analysis",
+    items: [
+      "Batch analysis endpoint — submit 2–20 failure inputs in a single request",
+      "Multi-input form with dynamic add/remove controls (up to 20 inputs)",
+      "Batch results view with summary bar and individual result cards",
+      "Each result links to its individual session detail page",
+      "Error isolation — individual input failures don't block the batch",
+      "Batch Analysis nav item visible in sidebar under Modules section",
+    ],
+  },
+  {
     version: "0.5.3",
     date: "2026-07-27",
     title: "Analysis Comparison",

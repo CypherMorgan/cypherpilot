@@ -91,6 +91,77 @@ class AnalysisRequest(BaseModel):
     )
 
 
+# ── Batch Analysis ────────────────────────────────────────────────
+
+
+class BatchInputItem(BaseModel):
+    """A single input within a batch analysis request."""
+
+    content: str = Field(
+        ...,
+        min_length=1,
+        max_length=100_000,
+        description="The failure output to analyze.",
+    )
+    source_type: InputSourceType = Field(
+        default=InputSourceType.PLAIN_TEXT,
+        description="The format of the input content.",
+    )
+    title: str | None = Field(
+        default=None,
+        max_length=255,
+        description="Optional title for this analysis.",
+    )
+    context: str | None = Field(
+        default=None,
+        max_length=10_000,
+        description="Optional additional context.",
+    )
+
+
+class BatchAnalysisRequest(BaseModel):
+    """Input payload for batch failure analysis."""
+
+    inputs: list[BatchInputItem] = Field(
+        ...,
+        min_length=2,
+        max_length=20,
+        description="List of failure inputs to analyze (2-20 items).",
+    )
+
+
+class BatchResultItem(BaseModel):
+    """A single result within a batch analysis response."""
+
+    index: int = Field(description="Index of the input in the batch (0-based).")
+    session_id: UUID = Field(description="ID of the created analysis session.")
+    status: str = Field(description="Status: completed or failed.")
+    result: FailureAnalysisResult | None = Field(
+        default=None,
+        description="Analysis result if successful.",
+    )
+    error: str | None = Field(
+        default=None,
+        description="Error message if failed.",
+    )
+    provider: str | None = Field(default=None)
+    model: str | None = Field(default=None)
+    total_tokens: int = Field(default=0)
+    latency_ms: int = Field(default=0)
+
+
+class BatchAnalysisResponse(BaseModel):
+    """Response from a batch analysis request."""
+
+    batch_id: str = Field(description="UUID grouping all sessions in this batch.")
+    total: int = Field(description="Total number of inputs.")
+    completed: int = Field(description="Number of successfully completed analyses.")
+    failed: int = Field(description="Number of failed analyses.")
+    results: list[BatchResultItem] = Field(
+        description="Individual analysis results, in input order.",
+    )
+
+
 # ── Multi-artifact input ─────────────────────────────────────────
 
 class ArtifactUpload(BaseModel):

@@ -30,6 +30,7 @@ from app.modules.auth.middleware import get_optional_current_user
 from app.modules.auth.models import User
 from app.modules.failure_analysis.models import (
     AnalysisRequest,
+    BatchAnalysisRequest,
     InputSourceType,
 )
 from app.modules.failure_analysis.service import (
@@ -101,6 +102,41 @@ async def analyze_failure(
 
     user_id = uuid.UUID(str(user.id)) if user else None
     result = await service.analyze(request, user_id=user_id)
+
+    response = {
+        "data": result.model_dump(mode="json"),
+        "meta": ResponseMeta(
+            request_id=getattr(http_request.state, "request_id", "") if http_request else "",
+        ).model_dump(),
+    }
+    return response
+
+
+@router.post(
+    "/batch-analyze",
+    response_model=dict,
+    status_code=status.HTTP_200_OK,
+    summary="Batch analyze failures",
+    description=(
+        "Submit multiple failure inputs (2-20) for batch AI-powered "
+        "failure analysis. Each input is processed sequentially; the "
+        "response includes individual results grouped by a batch_id."
+    ),
+)
+async def batch_analyze_failures(
+    request: BatchAnalysisRequest,
+    service: FailureAnalysisService = Depends(_get_service),
+    user: User | None = Depends(get_optional_current_user),
+    http_request: Request = None,  # type: ignore[assignment]
+) -> dict[str, Any]:
+    """Analyze multiple failure inputs in one request."""
+    _logger.info(
+        "Batch analysis requested",
+        count=len(request.inputs),
+    )
+
+    user_id = uuid.UUID(str(user.id)) if user else None
+    result = await service.batch_analyze(request, user_id=user_id)
 
     response = {
         "data": result.model_dump(mode="json"),

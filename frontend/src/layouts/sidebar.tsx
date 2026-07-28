@@ -11,6 +11,7 @@ import {
   Activity,
   Shield,
   GitCompareArrows,
+  Layers,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -46,6 +47,7 @@ const moduleNav: NavItem[] = [
   { label: "Requirement Analysis", path: ROUTES.REQUIREMENT_ANALYSIS, icon: FileJson },
   { label: "API Test Generation", path: ROUTES.API_TEST_GENERATION, icon: FlaskConical },
   { label: "Failure Analysis", path: ROUTES.FAILURE_ANALYSIS, icon: Bug },
+  { label: "Batch Analysis", path: ROUTES.FAILURE_BATCH, icon: Layers },
 ];
 
 const bottomNav: NavItem[] = [

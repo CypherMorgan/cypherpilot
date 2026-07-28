@@ -4,6 +4,25 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
+## v0.5.4 — Batch Analysis (2026-07-28)
+
+### Backend
+- **Batch analysis endpoint** — `POST /failures/batch-analyze` accepts 2-20 failure inputs in a single request
+- **BatchInputItem schema** — each input has content, source_type, title, and context
+- **BatchAnalysisResponse** — grouped response with batch_id, summary statistics, and individual results
+- **Sequential processing** — each input is processed through the full AI analysis pipeline independently
+- **Batch tagging** — each created session is tagged with the batch_id in its config JSON for grouping
+- **Error isolation** — individual input failures don't affect other inputs in the batch
+
+### Frontend
+- **Batch Analysis page** at `/failures/batch-analyze` — multi-input form with add/remove controls
+- **Dynamic input management** — add up to 20 inputs, each with content, source type, title, and context
+- **Batch results view** — summary bar (completed/failed counts), individual result cards
+- **Navigation** — each completed result links to its individual session detail page
+- **Batch nav item** — visible in sidebar under Modules section
+
+---
+
 ## v0.5.3 — Analysis Comparison (2026-07-27)
 
 ### Backend
