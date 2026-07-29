@@ -8,10 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
   SheetContent,
-  SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
 
 /**
  * Root application layout.
@@ -34,18 +31,8 @@ export function RootLayout() {
         <Sidebar collapsed={sidebarCollapsed} onToggle={toggleSidebar} />
       </div>
 
-      {/* Mobile sidebar (Sheet/drawer) */}
+      {/* Mobile sidebar (Sheet/drawer) — triggered by the topbar menu button */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="fixed left-4 top-3 z-40 lg:hidden"
-            aria-label="Open navigation menu"
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
-        </SheetTrigger>
         <SheetContent side="left" className="w-64 p-0">
           <Sidebar collapsed={false} onToggle={() => setMobileMenuOpen(false)} />
         </SheetContent>

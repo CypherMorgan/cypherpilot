@@ -94,8 +94,8 @@ export function FailureAnalysisPage() {
     <div className="mx-auto max-w-4xl space-y-6 p-6">
       {/* Page header */}
       <div className="flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-2">
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
             <Button
               variant="ghost"
               size="icon"
@@ -104,20 +104,20 @@ export function FailureAnalysisPage() {
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
-            <h1 className="text-2xl font-bold tracking-tight">
+            <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
               Failure Analysis
             </h1>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate(ROUTES.FAILURE_SESSIONS)}
-              className="ml-auto gap-1.5 text-xs text-muted-foreground"
+              className="ml-auto gap-1.5 text-xs text-muted-foreground shrink-0"
             >
               <History className="h-3.5 w-3.5" />
-              History
+              <span className="hidden sm:inline">History</span>
             </Button>
           </div>
-          <p className="mt-1 ml-10 text-sm text-muted-foreground">
+          <p className="mt-1 ml-0 text-sm text-muted-foreground sm:ml-10">
             Paste CI/CD logs, stack traces, or error output to get
             AI-powered root cause analysis and suggested fixes.
           </p>
@@ -190,13 +190,13 @@ export function FailureAnalysisPage() {
           )}
 
           {/* Submit — at the bottom, below both text input and file upload */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs text-muted-foreground">
               {artifacts.length > 0
                 ? `${artifacts.length} file(s) attached. Click "Analyze Failure" to run analysis.`
                 : "The failure output is analyzed by AI to identify root causes, suggest fixes, and assess impact."}
             </p>
-            <Button onClick={handleSubmit} disabled={!canSubmit} size="lg">
+            <Button onClick={handleSubmit} disabled={!canSubmit} size="lg" className="w-full sm:w-auto">
               {isSubmitting ? `Analyzing... (${elapsed}s)` : "Analyze Failure"}
             </Button>
           </div>

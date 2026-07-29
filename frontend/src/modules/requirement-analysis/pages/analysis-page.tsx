@@ -56,8 +56,8 @@ export function RequirementAnalysisPage() {
     <div className="mx-auto max-w-4xl space-y-6 p-6">
       {/* Page header */}
       <div className="flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-2">
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
             <Button
               variant="ghost"
               size="icon"
@@ -66,20 +66,20 @@ export function RequirementAnalysisPage() {
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
-            <h1 className="text-2xl font-bold tracking-tight">
+            <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
               Requirement Analysis
             </h1>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate(ROUTES.REQUIREMENT_SESSIONS)}
-              className="ml-auto gap-1.5 text-xs text-muted-foreground"
+              className="ml-auto gap-1.5 text-xs text-muted-foreground shrink-0"
             >
               <History className="h-3.5 w-3.5" />
-              History
+              <span className="hidden sm:inline">History</span>
             </Button>
           </div>
-          <p className="mt-1 ml-10 text-sm text-muted-foreground">
+          <p className="mt-1 ml-0 text-sm text-muted-foreground sm:ml-10">
             Submit requirements text for AI-powered analysis. Get structured test
             cases, risks, edge cases, and priority assessment.
           </p>

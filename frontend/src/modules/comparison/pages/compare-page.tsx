@@ -184,7 +184,7 @@ function SectionDiffView({ diff }: { diff: SectionDiff }) {
               <div className="flex items-center gap-2 text-xs font-medium text-amber-600 dark:text-amber-400">
                 <Pencil className="h-3 w-3" /> Changed
               </div>
-              <div className="mt-2 grid grid-cols-2 gap-2">
+              <div className="mt-2 grid grid-cols-1 gap-3 md:grid-cols-2">
                 <div>
                   <p className="text-[10px] font-medium text-muted-foreground mb-1">A</p>
                   <pre className="overflow-x-auto text-xs text-muted-foreground whitespace-pre-wrap rounded bg-background p-2 border">
@@ -239,7 +239,7 @@ function ComparisonView({
       </div>
 
       {/* Session headers */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {[result.session_a, result.session_b].map((session, i) => (
           <div key={i} className="rounded-lg border p-4">
             <p className="text-xs font-medium text-muted-foreground">
@@ -279,7 +279,7 @@ function ComparisonView({
       {(result.summary_a || result.summary_b) && (
         <div className="space-y-2">
           <h2 className="text-sm font-semibold text-muted-foreground">Summary</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="rounded-lg border p-4">
               <p className="text-xs font-medium text-muted-foreground mb-2">Session A</p>
               <p className="text-sm whitespace-pre-wrap">
@@ -388,10 +388,10 @@ export function ComparePage() {
       </div>
 
       {/* Filter */}
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <span className="text-sm text-muted-foreground">Filter by type:</span>
         <Select value={filterType} onValueChange={setFilterType}>
-          <SelectTrigger className="w-[200px]">
+          <SelectTrigger className="w-full sm:w-[200px]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -425,7 +425,7 @@ export function ComparePage() {
       ) : (
         <>
           {/* Session pickers */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <p className="mb-2 text-sm font-medium">Session A</p>
               <div className="space-y-2 max-h-[400px] overflow-y-auto">

@@ -106,9 +106,9 @@ export function HomePage() {
   const { data: health, isLoading, isError } = useHealth();
 
   return (
-    <div className="mx-auto max-w-6xl space-y-12 p-6 pb-16">
+    <div className="mx-auto max-w-6xl space-y-8 p-4 pb-16 md:space-y-12 md:p-6">
       {/* ── Hero ─────────────────────────────────────────── */}
-      <section className="relative overflow-hidden rounded-2xl border bg-card p-8 md:p-12">
+      <section className="relative overflow-hidden rounded-2xl border bg-card p-6 md:p-12">
         {/* Blob decorations */}
         <div
           className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 animate-blob rounded-full opacity-[0.08] dark:opacity-[0.12]"

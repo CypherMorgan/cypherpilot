@@ -176,10 +176,10 @@ export function SettingsPage() {
           </div>
         ) : (
           <div className="mt-4 space-y-4">
-            {/* Provider selector */}
-            <div>
-              <label className="text-sm font-medium">Provider</label>
-              <div className="mt-1 flex gap-2">
+              {/* Provider selector */}
+              <div>
+                <label className="text-sm font-medium">Provider</label>
+                <div className="mt-1 flex flex-wrap gap-2">
                 {[
                   { value: "openrouter", label: "OpenRouter" },
                   { value: "gemini", label: "Google Gemini" },
@@ -413,7 +413,7 @@ export function SettingsPage() {
 
       {/* ── Provider Health Dashboard ─────────────────────────── */}
       <section>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <h2 className="text-base font-semibold">Provider Health</h2>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -426,7 +426,7 @@ export function SettingsPage() {
             size="sm"
             onClick={fetchHealth}
             disabled={healthLoading}
-            className="gap-1.5"
+            className="gap-1.5 shrink-0 self-start"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${healthLoading ? "animate-spin" : ""}`} />
             Refresh

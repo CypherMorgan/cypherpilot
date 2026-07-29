@@ -163,7 +163,7 @@ export function NotificationsPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Notifications</h1>
           <p className="mt-1 text-muted-foreground">
@@ -178,6 +178,7 @@ export function NotificationsPage() {
             size="sm"
             onClick={handleMarkAllRead}
             disabled={markAllReadMutation.isPending}
+            className="self-start sm:self-auto"
           >
             <CheckCheck className="mr-1 h-4 w-4" />
             Mark all read
@@ -221,7 +222,7 @@ export function NotificationsPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between pt-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pt-4">
               <p className="text-sm text-muted-foreground">
                 Page {page} of {totalPages} ({total} notification{total !== 1 ? "s" : ""})
               </p>
