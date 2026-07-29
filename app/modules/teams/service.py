@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from structlog import get_logger
 
 from app.modules.auth.repository import UserRepository
+from app.modules.notifications.helpers import create_notification
 from app.modules.teams.models import Team, TeamMember, TeamMemberRole
 from app.modules.teams.repository import TeamMemberRepository, TeamRepository
 from app.modules.teams.schemas import (
@@ -175,6 +176,19 @@ class TeamService:
             role=role,
         )
 
+        # Notification for invite
+        team = await self._team_repo.get(team_id)
+        team_name = team.name if team else "unknown"
+        await create_notification(
+            self._member_repo._session,
+            user_id=user.id,
+            type_="team.invite",
+            title="Team Invitation",
+            message=f"You were invited to team \"{team_name}\" as {role}.",
+            resource_type="team",
+            resource_id=str(team_id),
+        )
+
         return TeamMemberResponse(
             user_id=user.id,
             username=user.username,
@@ -184,10 +198,24 @@ class TeamService:
         )
 
     async def remove_member(
-        self, team_id: uuid.UUID, user_id: uuid.UUID
+        self, team_id: uuid.UUID, user_id: uuid.UUID, _requester_id: uuid.UUID | None = None
     ) -> bool:
         """Remove a user from the team."""
-        return await self._member_repo.remove_member(team_id, user_id)
+        result = await self._member_repo.remove_member(team_id, user_id)
+
+        if result:
+            team = await self._team_repo.get(team_id)
+            await create_notification(
+                self._member_repo._session,
+                user_id=user_id,
+                type_="team.removed",
+                title="Removed from Team",
+                message=f"You were removed from team \"{team.name if team else 'unknown'}\".",
+                resource_type="team",
+                resource_id=str(team_id),
+            )
+
+        return result
 
     async def update_member_role(
         self,
@@ -220,6 +248,19 @@ class TeamService:
             return None
 
         await self._member_repo.update(membership.id, {"role": role})
+
+        # Notification for role change
+        team = await self._team_repo.get(team_id)
+        team_name = team.name if team else "unknown"
+        await create_notification(
+            self._member_repo._session,
+            user_id=user_id,
+            type_="team.role_changed",
+            title="Team Role Updated",
+            message=f"Your role in team \"{team_name}\" was changed to {role.value}.",
+            resource_type="team",
+            resource_id=str(team_id),
+        )
 
         user = await self._user_repo.get(user_id)
         return TeamMemberResponse(

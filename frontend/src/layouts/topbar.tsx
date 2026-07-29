@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useHealth } from "@/hooks/use-health";
+import { NotificationBell } from "@/modules/notifications/components/notification-bell";
 import { cn } from "@/lib/utils";
 
 interface TopbarProps {
@@ -29,6 +30,11 @@ export function Topbar({ onMenuToggle }: TopbarProps) {
 
       {/* Page title area — children can set via outlet context */}
       <div className="flex-1" />
+
+      {/* Notification bell */}
+      <NotificationBell />
+
+      <Separator orientation="vertical" className="h-6" />
 
       {/* Backend connection indicator */}
       <div className="flex items-center gap-2">

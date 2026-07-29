@@ -4,6 +4,26 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
+## v0.5.6 — Notifications (2026-07-29)
+
+### Backend
+- **Notifications model** — `notifications` table with user_id, type, title, message, resource_type, resource_id, read flag
+- **Alembic migration** — `a7b8c9d0e1f2` creates the notifications table with indexes
+- **Notifications module** — full module with schemas, repository, service, helpers, and router
+- **API endpoints** — GET /notifications (paginated), GET /notifications/unread, PATCH /{id}/read, PATCH /read-all, DELETE /{id}
+- **Non-blocking helper** — `create_notification()` swallows errors, never breaks the main request flow
+- **Analysis hooks** — notifications fire on analysis COMPLETED and FAILED in all 3 modules (failure, requirement, API test gen)
+- **Team hooks** — notifications fire on team invite, removal, and role change
+
+### Frontend
+- **Notifications page** at `/notifications` — paginated list with mark-read, mark-all-read, delete actions
+- **Notification bell** in topbar — shows unread badge with polling every 30s
+- **Notification nav item** in sidebar — persistent access to notifications
+- **Color-coded type badges** — green for analysis.completed, red for analysis.failed/team.removed, purple for team invites/role changes
+- **Unread indicator** — bold left border and dot on unread notifications
+
+---
+
 ## v0.5.5 — Animated Logo (2026-07-28)
 
 ### Frontend

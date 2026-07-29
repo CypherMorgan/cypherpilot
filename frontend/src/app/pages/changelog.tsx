@@ -10,6 +10,19 @@ interface ChangelogEntry {
 
 const entries: ChangelogEntry[] = [
   {
+    version: "0.5.6",
+    date: "2026-07-29",
+    title: "Notifications",
+    items: [
+      "Notifications system — user-specific notifications for analysis results and team events",
+      "Notifications page at /notifications — paginated list with mark-read, mark-all-read, and delete actions",
+      "Notification bell in topbar — unread badge with auto-polling every 30 seconds",
+      "Analysis notifications — notified on analysis COMPLETED and FAILED for all 3 modules",
+      "Team notifications — notified on team invite, removal, and role changes",
+      "Color-coded type badges — green for completed, red for failures/removals, purple for team events",
+    ],
+  },
+  {
     version: "0.5.5",
     date: "2026-07-28",
     title: "Animated Logo",

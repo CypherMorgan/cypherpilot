@@ -247,6 +247,20 @@ class ApiTestGenerationService:
 
             download_url = f"/api/v1/openapi/sessions/{session.id}/download"
 
+            # Notification for completion
+            if user_id:
+                from app.modules.notifications.helpers import create_notification
+
+                await create_notification(
+                    self._repository._session,
+                    user_id=user_id,
+                    type_="analysis.completed",
+                    title="API Test Generation Complete",
+                    message=f"Generation for \"{session.title or 'untitled'}\" completed successfully.",
+                    resource_type="session",
+                    resource_id=session.id,
+                )
+
             return OpenApiGenerateResponse(
                 session_id=session.id,
                 status=AnalysisStatus.COMPLETED.value,
@@ -274,6 +288,20 @@ class ApiTestGenerationService:
                         "error_message": error_msg,
                     },
                 )
+
+                # Notification for failure
+                if user_id:
+                    from app.modules.notifications.helpers import create_notification
+
+                    await create_notification(
+                        self._repository._session,
+                        user_id=user_id,
+                        type_="analysis.failed",
+                        title="API Test Generation Failed",
+                        message=f"Generation for \"{session.title or 'untitled'}\" failed: {error_msg[:200]}",
+                        resource_type="session",
+                        resource_id=session.id,
+                    )
 
             if isinstance(exc, ProviderUnavailableError | InvalidResponseError | AnalysisError):
                 raise

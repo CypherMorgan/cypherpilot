@@ -19,6 +19,7 @@ from app.modules.comparison.router import router as comparison_router
 from app.modules.failure_analysis.router import (
     router as failure_analysis_router,
 )
+from app.modules.notifications.router import router as notifications_router
 from app.modules.requirement_analysis.router import (
     router as requirement_analysis_router,
 )
@@ -29,6 +30,7 @@ router = APIRouter(prefix="/api/v1")
 router.include_router(auth_router)
 router.include_router(teams_router)
 router.include_router(audit_router)
+router.include_router(notifications_router)
 router.include_router(cleanup_router)
 router.include_router(health_router)
 router.include_router(settings_router)

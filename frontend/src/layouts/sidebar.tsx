@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import {
+  Bell,
   LayoutDashboard,
   Settings,
   type LucideIcon,
@@ -35,6 +36,7 @@ interface NavItem {
 
 const mainNav: NavItem[] = [
   { label: "Dashboard", path: "/", icon: LayoutDashboard },
+  { label: "Notifications", path: ROUTES.NOTIFICATIONS, icon: Bell },
   { label: "Teams", path: "/teams", icon: Users },
   { label: "Activity", path: "/activity", icon: Activity },
   { label: "Compare", path: "/compare", icon: GitCompareArrows },

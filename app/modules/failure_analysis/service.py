@@ -172,6 +172,20 @@ class FailureAnalysisService:
             if updated is None:
                 raise AnalysisError("Session was deleted during analysis")
 
+            # Notification for completion
+            if user_id:
+                from app.modules.notifications.helpers import create_notification
+
+                await create_notification(
+                    self._repository._session,
+                    user_id=user_id,
+                    type_="analysis.completed",
+                    title="Failure Analysis Complete",
+                    message=f"Analysis of \"{session.title or 'untitled'}\" completed successfully.",
+                    resource_type="session",
+                    resource_id=updated.id,
+                )
+
             return AnalysisResponse(
                 session_id=updated.id,
                 status=AnalysisStatus.COMPLETED.value,
@@ -192,6 +206,20 @@ class FailureAnalysisService:
                     "error_message": error_msg,
                 },
             )
+
+            # Notification for failure
+            if user_id:
+                from app.modules.notifications.helpers import create_notification
+
+                await create_notification(
+                    self._repository._session,
+                    user_id=user_id,
+                    type_="analysis.failed",
+                    title="Failure Analysis Failed",
+                    message=f"Analysis of \"{session.title or 'untitled'}\" failed: {error_msg[:200]}",
+                    resource_type="session",
+                    resource_id=session.id,
+                )
 
             if isinstance(exc, ProviderUnavailableError | InvalidResponseError | AnalysisError):
                 raise
