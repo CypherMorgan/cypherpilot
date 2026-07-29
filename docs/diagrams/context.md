@@ -94,7 +94,7 @@ C4Context
 | **Ollama (Local LLM)** | AI Provider (post-MVP) | Local LLM support — no internet required, no API key needed |
 | **Claude API** | AI Provider (post-MVP) | Drop-in replacement for Gemini via provider adapter |
 | **OpenAI API** | AI Provider (post-MVP) | Same abstraction, different adapter |
-| **Allure Reports** | Report Analysis v0.5.0 | Ingest XML/JSON test report files |
+| **Allure Reports** | Report Analysis v0.6.0 | Ingest XML/JSON test report files |
 | **Jira API** | Bug Generator v0.6.0 | Create tickets via REST API with structured bug reports |
 | **GitHub API** | PR Review Assistant v0.8.0 | Read PR diffs via REST API, post comments with test suggestions |
 

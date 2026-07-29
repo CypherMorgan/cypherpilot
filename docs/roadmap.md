@@ -81,12 +81,12 @@
 
 ## Future Phases (Post-MVP)
 
-### v0.5.0 — Allure Report Analysis
+### v0.6.0 — Allure Report Analysis
 - Upload Allure report XML/JSON
 - AI-powered analysis of test trends, flaky tests, and failure clusters
 - Aggregate insights across multiple test runs
 
-### v0.6.0 — Jira Bug Generator
+### v0.6.1 — Jira Bug Generator
 - Convert failure analysis into structured bug reports
 - Jira-format output with summary, description, environment, steps to reproduce
 - Optionally integrate with Jira API for direct ticket creation

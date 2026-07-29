@@ -476,7 +476,7 @@ Tests in `app/modules/requirement_analysis/tests/` must NOT import from `app/mod
 
 | Phase | Change | Impact |
 |---|---|---|
-| **v0.5.0: Allure Report Analysis** | New module `allure_analysis` | Follows same structure — create directory, implement, register in main.py |
+| **v0.6.0: Allure Report Analysis** | New module `allure_analysis` | Follows same structure — create directory, implement, register in main.py |
 | **v0.6.0: Jira Bug Generator** | New module `jira_bug_generator` | Follows same structure |
 | **v0.7.0: Test Data Generator** | New module `test_data_generator` | Follows same structure |
 | **Cross-module workflows** | New `app/application/workflows/` directory | Orchestration-level services that compose multiple modules |

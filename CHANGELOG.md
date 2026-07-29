@@ -4,7 +4,7 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
-## v0.5.6 — Notifications (2026-07-29)
+## v0.5.5 — Notifications & Animated Logo (2026-07-29)
 
 ### Backend
 - **Notifications model** — `notifications` table with user_id, type, title, message, resource_type, resource_id, read flag
@@ -21,12 +21,6 @@ All notable changes to CypherPilot are documented here.
 - **Notification nav item** in sidebar — persistent access to notifications
 - **Color-coded type badges** — green for analysis.completed, red for analysis.failed/team.removed, purple for team invites/role changes
 - **Unread indicator** — bold left border and dot on unread notifications
-
----
-
-## v0.5.5 — Animated Logo (2026-07-28)
-
-### Frontend
 - **Terminal-style animated logo** — `>CypherPilot_` with blinking cursor, matching the header style from cyphermorgan's portfolio
 - **Collapsed variant** — `CP_` with blinking cursor for collapsed sidebars
 - **Reusable `AnimatedLogo` component** — used in sidebar, login page, register page, and dashboard welcome heading
