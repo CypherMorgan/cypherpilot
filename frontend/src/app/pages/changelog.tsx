@@ -10,6 +10,17 @@ interface ChangelogEntry {
 
 const entries: ChangelogEntry[] = [
   {
+    version: "0.5.5",
+    date: "2026-07-28",
+    title: "Animated Logo",
+    items: [
+      "Terminal-style animated logo — >CypherPilot_ with blinking cursor",
+      "Collapsed variant CP_ for collapsed sidebars",
+      "Reusable AnimatedLogo component across sidebar, auth pages, and dashboard",
+      "CSS blink animation matching cyphermorgan portfolio header style",
+    ],
+  },
+  {
     version: "0.5.4",
     date: "2026-07-28",
     title: "Batch Analysis",

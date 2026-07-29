@@ -15,7 +15,8 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { APP_NAME, ROUTES } from "@/lib/constants";
+import { ROUTES } from "@/lib/constants";
+import { AnimatedLogo } from "@/components/animated-logo";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
@@ -114,11 +115,9 @@ export function Sidebar({ collapsed }: SidebarProps) {
         )}
       >
         {collapsed ? (
-          <span className="text-lg font-bold text-sidebar-foreground">CP</span>
+          <AnimatedLogo variant="compact" />
         ) : (
-          <span className="text-base font-bold text-sidebar-foreground">
-            {APP_NAME}
-          </span>
+          <AnimatedLogo variant="full" />
         )}
       </div>
 

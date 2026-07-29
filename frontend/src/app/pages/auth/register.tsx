@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { APP_NAME } from "@/lib/constants";
+import { AnimatedLogo } from "@/components/animated-logo";
 
 export function RegisterPage() {
   const { register, isDemoMode, enterDemoMode } = useAuth();
@@ -47,10 +47,12 @@ export function RegisterPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold">{APP_NAME}</CardTitle>
-          <CardDescription>Create a new account</CardDescription>
-        </CardHeader>
+          <CardHeader className="space-y-1 text-center">
+            <CardTitle className="text-2xl font-bold">
+              <AnimatedLogo />
+            </CardTitle>
+            <CardDescription>Create a new account</CardDescription>
+          </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             {isDemoMode && (

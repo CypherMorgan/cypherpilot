@@ -4,6 +4,16 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
+## v0.5.5 — Animated Logo (2026-07-28)
+
+### Frontend
+- **Terminal-style animated logo** — `>CypherPilot_` with blinking cursor, matching the header style from cyphermorgan's portfolio
+- **Collapsed variant** — `CP_` with blinking cursor for collapsed sidebars
+- **Reusable `AnimatedLogo` component** — used in sidebar, login page, register page, and dashboard welcome heading
+- **CSS keyframe animation** — 1s step-end blink loop for the underscore cursor
+
+---
+
 ## v0.5.4 — Batch Analysis (2026-07-28)
 
 ### Backend

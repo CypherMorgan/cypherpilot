@@ -9,6 +9,7 @@ function cssProps(props: Record<string, string | number>): React.CSSProperties {
   return props as React.CSSProperties;
 }
 import { APP_NAME, APP_VERSION, ROUTES } from "@/lib/constants";
+import { AnimatedLogo } from "@/components/animated-logo";
 import {
   Activity,
   ArrowRight,
@@ -126,7 +127,7 @@ export function HomePage() {
             v{APP_VERSION}
           </div>
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-            Welcome to {APP_NAME}
+            Welcome to <AnimatedLogo />
           </h1>
           <p className="mt-3 max-w-2xl text-base text-muted-foreground md:text-lg">
             An AI-augmented quality engineering platform that helps QA engineers and
