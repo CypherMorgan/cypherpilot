@@ -10,6 +10,19 @@ interface ChangelogEntry {
 
 const entries: ChangelogEntry[] = [
   {
+    version: "0.5.6",
+    date: "2026-07-31",
+    title: "Templates",
+    items: [
+      "Reusable analysis templates — save common failure patterns for one-click analysis",
+      "Templates page at /templates — create, edit, and delete with confirmation",
+      "Template picker on the Failure Analysis page — loads content, source type, and title instantly",
+      "User-scoped templates — every user's templates are private to them",
+      "Source type support — plain text, markdown, CI logs, and stack traces",
+      "Templates nav item in sidebar under Modules",
+    ],
+  },
+  {
     version: "0.5.5",
     date: "2026-07-29",
     title: "Notifications & Animated Logo",

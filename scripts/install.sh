@@ -28,7 +28,7 @@ set -euo pipefail
 REPO_URL="https://github.com/CypherMorgan/cypherpilot.git"
 REPO_BRANCH="master"
 INSTALL_DIR="${CYPHERPILOT_HOME:-$HOME/.cypherpilot}"
-CYPHERPILOT_VERSION="0.5.5"
+CYPHERPILOT_VERSION="0.5.6"
 
 # Colors for output
 RED='\033[0;31m'

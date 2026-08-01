@@ -4,6 +4,25 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
+## v0.5.6 — Templates (2026-07-31)
+
+### Backend
+- **Templates model** — `templates` table with id, user_id FK (CASCADE), name, optional description, content, source_type, timestamps
+- **Alembic migration** — `b8c9d0e1f203` creates the templates table with user_id index
+- **Templates module** — new `app/modules/templates/` with schemas, repository, service, and router
+- **API endpoints** — GET /templates (paginated), POST /templates, GET /templates/{id}, PATCH /templates/{id}, DELETE /templates/{id}
+- **User scoping** — every query is filtered by owner, so users can only read/modify their own templates
+- **Source type validation** — plain_text, markdown, ci_log, stack_trace enforced at the service and schema layers
+
+### Frontend
+- **Templates page** at `/templates` — card grid with create/edit dialogs and delete confirmation
+- **Template picker** on the Failure Analysis page — one click loads a saved template (content, source type, title)
+- **Templates nav item** in sidebar under Modules
+- **TanStack Query hooks** — list/create/update/delete with automatic cache invalidation
+- **Empty state** — guided first-template creation for new users
+
+---
+
 ## v0.5.5 — Notifications & Animated Logo (2026-07-29)
 
 ### Backend

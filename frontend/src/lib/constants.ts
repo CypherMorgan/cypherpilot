@@ -1,6 +1,6 @@
 /** Application-wide constants */
 export const APP_NAME = "CypherPilot";
-export const APP_VERSION = "0.5.5";
+export const APP_VERSION = "0.5.6";
 
 /** Set to "true" at build time for GitHub Pages deployment (no backend) */
 export const IS_PREVIEW = import.meta.env.VITE_PREVIEW_ONLY === "true";
@@ -19,6 +19,7 @@ export const ROUTES = {
   ACTIVITY: "/activity",
   COMPARE: "/compare",
   NOTIFICATIONS: "/notifications",
+  TEMPLATES: "/templates",
   USERS: "/users",
   TEAMS: "/teams",
   TEAM_DETAIL: "/teams/:teamId",
@@ -42,6 +43,7 @@ export const NAV_ITEMS = [
   { label: "Requirement Analysis", path: ROUTES.REQUIREMENT_ANALYSIS, icon: "FileText" as const },
   { label: "API Test Generation", path: ROUTES.API_TEST_GENERATION, icon: "FlaskConical" as const },
   { label: "Failure Analysis", path: ROUTES.FAILURE_ANALYSIS, icon: "Bug" as const },
+  { label: "Templates", path: ROUTES.TEMPLATES, icon: "LayoutTemplate" as const },
   { label: "Batch Analysis", path: ROUTES.FAILURE_BATCH, icon: "Layers" as const },
   { label: "Settings", path: ROUTES.SETTINGS, icon: "Settings" as const },
 ] as const;

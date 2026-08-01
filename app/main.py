@@ -47,6 +47,9 @@ from app.modules.teams.models import (  # noqa: F401 — registers Team/TeamMemb
     Team,
     TeamMember,
 )
+from app.modules.templates.models import (  # noqa: F401 — registers Template on Base.metadata
+    Template,
+)
 
 _logger = get_logger(__name__)
 

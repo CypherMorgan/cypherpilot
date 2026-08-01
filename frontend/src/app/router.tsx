@@ -11,6 +11,7 @@ import { LoginPage } from "@/app/pages/auth/login";
 import { RegisterPage } from "@/app/pages/auth/register";
 import { TeamsPage } from "@/modules/teams/pages/teams-page";
 import { TeamDetailPage } from "@/modules/teams/pages/team-detail-page";
+import { TemplatesPage } from "@/modules/templates/pages/templates-page";
 import { ActivityPage } from "@/modules/audit/pages/activity-page";
 import { UsersPage } from "@/modules/admin/pages/users-page";
 import { ComparePage } from "@/modules/comparison/pages/compare-page";
@@ -63,6 +64,8 @@ const router = createBrowserRouter(
             // Teams
             { path: "teams", element: <TeamsPage /> },
             { path: "teams/:teamId", element: <TeamDetailPage /> },
+            // Templates
+            { path: "templates", element: <TemplatesPage /> },
             // Requirement Analysis module
             { path: "requirements/analyze", element: <RequirementAnalysisPage /> },
             { path: "requirements/sessions", element: <RequirementSessionsPage /> },

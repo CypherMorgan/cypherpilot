@@ -24,11 +24,13 @@ from app.modules.requirement_analysis.router import (
     router as requirement_analysis_router,
 )
 from app.modules.teams.router import router as teams_router
+from app.modules.templates.router import router as templates_router
 
 router = APIRouter(prefix="/api/v1")
 
 router.include_router(auth_router)
 router.include_router(teams_router)
+router.include_router(templates_router)
 router.include_router(audit_router)
 router.include_router(notifications_router)
 router.include_router(cleanup_router)

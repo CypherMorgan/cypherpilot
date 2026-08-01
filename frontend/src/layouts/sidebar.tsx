@@ -13,6 +13,7 @@ import {
   Shield,
   GitCompareArrows,
   Layers,
+  LayoutTemplate,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -50,6 +51,7 @@ const moduleNav: NavItem[] = [
   { label: "Requirement Analysis", path: ROUTES.REQUIREMENT_ANALYSIS, icon: FileJson },
   { label: "API Test Generation", path: ROUTES.API_TEST_GENERATION, icon: FlaskConical },
   { label: "Failure Analysis", path: ROUTES.FAILURE_ANALYSIS, icon: Bug },
+  { label: "Templates", path: ROUTES.TEMPLATES, icon: LayoutTemplate },
   { label: "Batch Analysis", path: ROUTES.FAILURE_BATCH, icon: Layers },
 ];
 

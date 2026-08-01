@@ -3,7 +3,7 @@
 **CypherPilot** is an AI-augmented quality engineering platform that helps QA engineers and SDETs analyze requirements, generate API test suites, and diagnose automation failures — using AI as an accelerator, not a crutch.
 
 > Created by **Cypher Morgan**
-![Version](https://img.shields.io/badge/version-0.5.5-blue)
+![Version](https://img.shields.io/badge/version-0.5.6-blue)
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green)
 ![React](https://img.shields.io/badge/React-18-blue)
@@ -23,7 +23,7 @@
 
 See the full [Changelog](./CHANGELOG.md) for the complete release history.
 
-**Latest: v0.5.5** — Notifications & Animated Logo. [Read more](./CHANGELOG.md).
+**Latest: v0.5.6** — Templates: reusable analysis templates for common failure patterns. [Read more](./CHANGELOG.md).
 
 ## Features
 
@@ -273,7 +273,7 @@ uv run ruff check
 | **v0.5.3** | Analysis Comparison — side-by-side diff of analysis results across sessions | ✅ Done |
 | **v0.5.4** | Batch Analysis — run failure analysis against multiple log files at once | ✅ Done |
 | **v0.5.5** | Notifications & Animated Logo — real-time alerts, terminal-style animated logo | ✅ Done |
-| **v0.5.6** | Templates — reusable analysis templates for common failure patterns | 🔜 Planned |
+| **v0.5.6** | Templates — reusable analysis templates for common failure patterns | ✅ Done |
 | **v0.5.7** | Rate Limiting — per-user and per-team API rate limiting | 🔜 Planned |
 | **v0.6.x** | CI/CD Integration & Notifications — webhook/callback support, Slack/email alerts, GitHub/GitLab integration | 🔜 Planned |
 | **v0.7.x** | Trends & Prompt Studio — historical trend analysis, prompt versioning UI, A/B prompt comparison | 🔜 Planned |

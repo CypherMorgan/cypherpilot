@@ -18,6 +18,8 @@ import {
   useAnalyzeFailureWithArtifacts,
 } from "@/modules/failure-analysis/hooks/use-failure-analysis";
 import type { AnalysisResponse, InputSourceType } from "@/modules/failure-analysis/types";
+import { TemplatePicker } from "@/modules/templates/components/template-picker";
+import type { AnalysisTemplate } from "@/modules/templates/types";
 
 export function FailureAnalysisPage() {
   const navigate = useNavigate();
@@ -90,6 +92,12 @@ export function FailureAnalysisPage() {
     resetArtifact();
   };
 
+  const handleSelectTemplate = (template: AnalysisTemplate) => {
+    setContent(template.content);
+    setSourceType(template.source_type);
+    setTitle(template.name);
+  };
+
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-6">
       {/* Page header */}
@@ -127,6 +135,8 @@ export function FailureAnalysisPage() {
       {/* Main content */}
       {!result ? (
         <div className="space-y-6">
+          <TemplatePicker onSelectTemplate={handleSelectTemplate} />
+
           <FailureInput
             content={content}
             onContentChange={setContent}
