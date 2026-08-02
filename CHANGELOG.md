@@ -4,6 +4,21 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
+## v0.5.8 — Session Export (2026-08-02)
+
+### Backend
+- **Shared export helpers** — `app/infrastructure/exports.py` with `ExportFile` payload, `export_filename` (e.g. `failure-analysis-<id>.md`), and `export_media_type`
+- **CSV exporters** — flattened spreadsheets (UTF-8 BOM for Excel) for Failure Analysis (`app/modules/failure_analysis/exporters/csv_.py`) and Requirement Analysis (`app/modules/requirement_analysis/exporters/csv_.py`), registered in each `get_exporter` factory
+- **API test session exporters** — new `session_exporter.py` (Markdown/JSON/CSV summaries from stored `output_data`); JSON export excludes the base64 ZIP payload (use the existing ZIP download endpoint for the archive)
+- **Export endpoints** — `GET /failures/sessions/{id}/export`, `GET /requirements/sessions/{id}/export`, `GET /openapi/sessions/{id}/export` with `?format=markdown|json|csv` (default markdown), returning `Content-Disposition: attachment` downloads
+- **Ownership enforcement** — exports require authentication and are scoped to the session owner; foreign sessions are indistinguishable from missing ones (404)
+
+### Frontend
+- **Session export menu** — shared `SessionExportMenu` dropdown (Download Markdown / JSON / CSV) on all three session detail pages
+- **Authenticated downloads** — `downloadSessionExport` service fetches the file through the axios client (bearer token attached) and saves it using the server-provided filename
+
+---
+
 ## v0.5.7 — Rate Limiting (2026-08-02)
 
 ### Backend

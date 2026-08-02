@@ -21,6 +21,7 @@ import { AnalysisSummary } from "@/modules/failure-analysis/components/analysis-
 import { useFailureSession, useDeleteFailureSession } from "@/modules/failure-analysis/hooks/use-failure-analysis";
 import { LoadingState } from "@/components/loading-state";
 import { EmptyState } from "@/components/empty-state";
+import { SessionExportMenu } from "@/components/session-export-menu";
 
 export function FailureSessionDetailPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -58,6 +59,12 @@ export function FailureSessionDetailPage() {
           <History className="h-3.5 w-3.5" />
           <span className="hidden sm:inline">History</span>
         </Button>
+        {sessionId && (
+          <SessionExportMenu
+            exportPath={`/failures/sessions/${sessionId}/export`}
+            disabled={!data}
+          />
+        )}
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <AlertDialogTrigger asChild>
             <Button

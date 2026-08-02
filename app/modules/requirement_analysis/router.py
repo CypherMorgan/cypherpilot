@@ -7,16 +7,17 @@ results, and listing past sessions.
 from __future__ import annotations
 
 import uuid
-from typing import Any
+from typing import Any, Literal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query, Request, status
+from fastapi.responses import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from structlog import get_logger
 
 from app.domain.models import PaginationMeta, ResponseMeta
 from app.infrastructure.database import get_db
-from app.modules.auth.middleware import get_optional_current_user
+from app.modules.auth.middleware import get_current_user, get_optional_current_user
 from app.modules.auth.models import User
 from app.modules.requirement_analysis.models import (
     AnalysisRequest,
@@ -155,6 +156,39 @@ async def list_analysis_sessions(
         ).model_dump(),
     }
     return response
+
+
+@router.get(
+    "/sessions/{session_id}/export",
+    summary="Export analysis session",
+    description=(
+        "Download a completed requirement analysis session as Markdown, "
+        "JSON, or CSV. The session must belong to the authenticated user."
+    ),
+)
+async def export_analysis_session(
+    session_id: UUID,
+    format_name: Literal["markdown", "json", "csv"] = Query(
+        default="markdown",
+        alias="format",
+        description="Export format: 'markdown', 'json', or 'csv'.",
+    ),
+    service: RequirementAnalysisService = Depends(_get_service),
+    user: User = Depends(get_current_user),
+) -> Response:
+    """Download a requirement analysis session in the requested format."""
+    payload = await service.export_session(
+        session_id,
+        format_name=format_name,
+        user_id=user.id,
+    )
+    return Response(
+        content=payload.content,
+        media_type=payload.media_type,
+        headers={
+            "Content-Disposition": f'attachment; filename="{payload.filename}"',
+        },
+    )
 
 
 @router.delete(

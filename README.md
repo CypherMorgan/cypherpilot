@@ -3,7 +3,7 @@
 **CypherPilot** is an AI-augmented quality engineering platform that helps QA engineers and SDETs analyze requirements, generate API test suites, and diagnose automation failures — using AI as an accelerator, not a crutch.
 
 > Created by **Cypher Morgan**
-![Version](https://img.shields.io/badge/version-0.5.7-blue)
+![Version](https://img.shields.io/badge/version-0.5.8-blue)
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green)
 ![React](https://img.shields.io/badge/React-18-blue)
@@ -23,7 +23,7 @@
 
 See the full [Changelog](./CHANGELOG.md) for the complete release history.
 
-**Latest: v0.5.7** — Rate Limiting: per-user and per-team API rate limiting. [Read more](./CHANGELOG.md).
+**Latest: v0.5.8** — Session Export: download analysis sessions as Markdown, JSON, or CSV from the session detail pages. [Read more](./CHANGELOG.md).
 
 ## Features
 
@@ -275,6 +275,7 @@ uv run ruff check
 | **v0.5.5** | Notifications & Animated Logo — real-time alerts, terminal-style animated logo | ✅ Done |
 | **v0.5.6** | Templates — reusable analysis templates for common failure patterns | ✅ Done |
 | **v0.5.7** | Rate Limiting — per-user and per-team API rate limiting | ✅ Done |
+| **v0.5.8** | Session Export — download sessions as Markdown, JSON, or CSV | ✅ Done |
 | **v0.6.x** | CI/CD Integration & Notifications — webhook/callback support, Slack/email alerts, GitHub/GitLab integration | 🔜 Planned |
 | **v0.7.x** | Trends & Prompt Studio — historical trend analysis, prompt versioning UI, A/B prompt comparison | 🔜 Planned |
 | **v0.8.x** | Plugins & Enterprise — plugin SDK, SSO/SAML, audit logs, team billing | 🔜 Planned |

@@ -34,7 +34,13 @@ from app.exceptions import (
     NotFoundError,
     ProviderUnavailableError,
 )
+from app.infrastructure.exports import (
+    ExportFile,
+    export_filename,
+    export_media_type,
+)
 from app.infrastructure.models.analysis_session import AnalysisSession
+from app.modules.requirement_analysis.exporters import get_exporter
 from app.modules.requirement_analysis.models import (
     AnalysisRequest,
     AnalysisResponse,
@@ -270,6 +276,49 @@ class RequirementAnalysisService:
             page=page,
             page_size=page_size,
             user_id=user_id,
+        )
+
+    async def export_session(
+        self,
+        session_id: UUID,
+        format_name: str,
+        user_id: _uuid.UUID,
+    ) -> ExportFile:
+        """Export a session's analysis result as markdown, JSON, or CSV.
+
+        The session must belong to ``user_id``; foreign or missing
+        sessions raise ``NotFoundError`` so they are indistinguishable.
+
+        Args:
+            session_id: UUID of the analysis session.
+            format_name: ``"markdown"``, ``"json"`` or ``"csv"``.
+            user_id: The requesting user (ownership check).
+
+        Returns:
+            An ``ExportFile`` payload ready to download.
+
+        Raises:
+            NotFoundError: If the session does not exist, belongs to
+                another user, or has no output data.
+        """
+        session = await self._repository.get_with_output(session_id)
+        if session is None or session.user_id != user_id:
+            raise NotFoundError(
+                f"Analysis session not found: {session_id}",
+                detail={"session_id": str(session_id)},
+            )
+        if session.output_data is None:
+            raise NotFoundError(
+                f"Analysis session {session_id} has no output data",
+                detail={"session_id": str(session_id), "status": str(session.status)},
+            )
+
+        result = RequirementAnalysisResult.model_validate(session.output_data)
+        content = get_exporter(format_name).export(result)
+        return ExportFile(
+            content=content,
+            media_type=export_media_type(format_name),
+            filename=export_filename("requirement-analysis", session_id, format_name),
         )
 
     async def delete_session(self, session_id: UUID) -> None:

@@ -10,6 +10,18 @@ interface ChangelogEntry {
 
 const entries: ChangelogEntry[] = [
   {
+    version: "0.5.8",
+    date: "2026-08-02",
+    title: "Session Export",
+    items: [
+      "Download analysis sessions as Markdown, JSON, or CSV from the session detail pages",
+      "CSV exports are flattened spreadsheets with a UTF-8 BOM so Excel opens them correctly",
+      "API test generation sessions export a summary (endpoints + generated files) with the ZIP archive excluded",
+      "Exports are authenticated and scoped to the session owner — you can only download your own sessions",
+      "Server-side files use descriptive filenames like failure-analysis-<id>.md",
+    ],
+  },
+  {
     version: "0.5.7",
     date: "2026-08-02",
     title: "Rate Limiting",

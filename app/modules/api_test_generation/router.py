@@ -8,7 +8,7 @@ and downloading generated test files.
 from __future__ import annotations
 
 import uuid
-from typing import Any
+from typing import Any, Literal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query, Request, status
@@ -24,7 +24,7 @@ from app.modules.api_test_generation.models import (
 from app.modules.api_test_generation.service import (
     ApiTestGenerationService,
 )
-from app.modules.auth.middleware import get_optional_current_user
+from app.modules.auth.middleware import get_current_user, get_optional_current_user
 from app.modules.auth.models import User
 
 router = APIRouter(
@@ -184,6 +184,40 @@ async def download_generated_tests(
         media_type="application/zip",
         headers={
             "Content-Disposition": f'attachment; filename="generated-tests-{session_id}.zip"',
+        },
+    )
+
+
+@router.get(
+    "/sessions/{session_id}/export",
+    summary="Export generation session",
+    description=(
+        "Download a completed API test generation session summary as "
+        "Markdown, JSON, or CSV. The session must belong to the "
+        "authenticated user."
+    ),
+)
+async def export_generation_session(
+    session_id: UUID,
+    format_name: Literal["markdown", "json", "csv"] = Query(
+        default="markdown",
+        alias="format",
+        description="Export format: 'markdown', 'json', or 'csv'.",
+    ),
+    service: ApiTestGenerationService = Depends(_get_service),
+    user: User = Depends(get_current_user),
+) -> Response:
+    """Download an API test generation session in the requested format."""
+    payload = await service.export_session(
+        session_id,
+        format_name=format_name,
+        user_id=user.id,
+    )
+    return Response(
+        content=payload.content,
+        media_type=payload.media_type,
+        headers={
+            "Content-Disposition": f'attachment; filename="{payload.filename}"',
         },
     )
 

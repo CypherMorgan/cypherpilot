@@ -34,8 +34,16 @@ from app.exceptions import (
     NotFoundError,
     ProviderUnavailableError,
 )
+from app.infrastructure.exports import (
+    ExportFile,
+    export_filename,
+    export_media_type,
+)
 from app.infrastructure.models.analysis_session import AnalysisSession
 from app.modules.api_test_generation.exporters.pytest_generator import PytestGenerator
+from app.modules.api_test_generation.exporters.session_exporter import (
+    get_session_exporter,
+)
 from app.modules.api_test_generation.models import (
     EndpointGenInfo,
     GeneratedFile,
@@ -420,6 +428,48 @@ class ApiTestGenerationService:
             return None
 
         return self._pytest_gen.decode_zip_content(zip_b64)
+
+    async def export_session(
+        self,
+        session_id: UUID,
+        format_name: str,
+        user_id: _uuid.UUID,
+    ) -> ExportFile:
+        """Export a session's summary as markdown, JSON, or CSV.
+
+        The session must belong to ``user_id``; foreign or missing
+        sessions raise ``NotFoundError`` so they are indistinguishable.
+
+        Args:
+            session_id: UUID of the generation session.
+            format_name: ``"markdown"``, ``"json"`` or ``"csv"``.
+            user_id: The requesting user (ownership check).
+
+        Returns:
+            An ``ExportFile`` payload ready to download.
+
+        Raises:
+            NotFoundError: If the session does not exist, belongs to
+                another user, or has no output data.
+        """
+        session = await self._repository.get_with_output(session_id)
+        if session is None or session.user_id != user_id:
+            raise NotFoundError(
+                f"Generation session not found: {session_id}",
+                detail={"session_id": str(session_id)},
+            )
+        if session.output_data is None:
+            raise NotFoundError(
+                f"Generation session {session_id} has no output data",
+                detail={"session_id": str(session_id), "status": str(session.status)},
+            )
+
+        content = get_session_exporter(format_name).export(session.output_data)
+        return ExportFile(
+            content=content,
+            media_type=export_media_type(format_name),
+            filename=export_filename("api-test-generation", session_id, format_name),
+        )
 
     # ── Private helpers ─────────────────────────────────────────
 

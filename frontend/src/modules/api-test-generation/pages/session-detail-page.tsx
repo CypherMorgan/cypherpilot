@@ -21,6 +21,7 @@ import { GenerationResults } from "@/modules/api-test-generation/components/gene
 import { useApiTestSession, useDeleteApiTestSession } from "@/modules/api-test-generation/hooks/use-api-test-generation";
 import { LoadingState } from "@/components/loading-state";
 import { EmptyState } from "@/components/empty-state";
+import { SessionExportMenu } from "@/components/session-export-menu";
 
 export function ApiTestSessionDetailPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -58,6 +59,12 @@ export function ApiTestSessionDetailPage() {
           <History className="h-3.5 w-3.5" />
           <span className="hidden sm:inline">History</span>
         </Button>
+        {sessionId && (
+          <SessionExportMenu
+            exportPath={`/openapi/sessions/${sessionId}/export`}
+            disabled={!data}
+          />
+        )}
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <AlertDialogTrigger asChild>
             <Button

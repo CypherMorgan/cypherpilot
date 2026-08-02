@@ -1,12 +1,12 @@
 """Export layer for Requirement Analysis.
 
 Provides abstract base class and concrete implementations
-(Markdown, JSON) for exporting analysis results.
+(Markdown, JSON, CSV) for exporting analysis results.
 
 Usage::
 
     from app.modules.requirement_analysis.exporters import (
-        MarkdownExporter, JsonExporter, get_exporter
+        MarkdownExporter, JsonExporter, CsvExporter, get_exporter
     )
 
     # Direct instantiation
@@ -19,12 +19,14 @@ Usage::
 """
 
 from app.modules.requirement_analysis.exporters.base import AnalysisExporter
+from app.modules.requirement_analysis.exporters.csv_ import CsvExporter
 from app.modules.requirement_analysis.exporters.json_ import JsonExporter
 from app.modules.requirement_analysis.exporters.markdown import MarkdownExporter
 
 _EXPORTERS: dict[str, type[AnalysisExporter]] = {
     "markdown": MarkdownExporter,
     "json": JsonExporter,
+    "csv": CsvExporter,
 }
 
 
@@ -32,7 +34,7 @@ def get_exporter(format_name: str) -> AnalysisExporter:
     """Return an exporter instance for the given format name.
 
     Args:
-        format_name: ``"markdown"`` or ``"json"``.
+        format_name: ``"markdown"``, ``"json"`` or ``"csv"``.
 
     Returns:
         An ``AnalysisExporter`` instance.
@@ -49,6 +51,7 @@ def get_exporter(format_name: str) -> AnalysisExporter:
 
 __all__ = [
     "AnalysisExporter",
+    "CsvExporter",
     "JsonExporter",
     "MarkdownExporter",
     "get_exporter",

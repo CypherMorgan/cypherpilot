@@ -1,12 +1,12 @@
 """Export layer for Failure Analysis.
 
 Provides abstract base class and concrete implementations
-(Markdown, JSON) for exporting analysis results.
+(Markdown, JSON, CSV) for exporting analysis results.
 
 Usage::
 
     from app.modules.failure_analysis.exporters import (
-        MarkdownExporter, JsonExporter, get_exporter
+        MarkdownExporter, JsonExporter, CsvExporter, get_exporter
     )
 
     # Direct instantiation
@@ -19,12 +19,14 @@ Usage::
 """
 
 from app.modules.failure_analysis.exporters.base import FailureExporter
+from app.modules.failure_analysis.exporters.csv_ import CsvExporter
 from app.modules.failure_analysis.exporters.json_ import JsonExporter
 from app.modules.failure_analysis.exporters.markdown import MarkdownExporter
 
 _EXPORTERS: dict[str, type[FailureExporter]] = {
     "markdown": MarkdownExporter,
     "json": JsonExporter,
+    "csv": CsvExporter,
 }
 
 
@@ -32,7 +34,7 @@ def get_exporter(format_name: str) -> FailureExporter:
     """Return an exporter instance for the given format name.
 
     Args:
-        format_name: ``"markdown"`` or ``"json"``.
+        format_name: ``"markdown"``, ``"json"`` or ``"csv"``.
 
     Returns:
         A ``FailureExporter`` instance.
@@ -48,6 +50,7 @@ def get_exporter(format_name: str) -> FailureExporter:
 
 
 __all__ = [
+    "CsvExporter",
     "FailureExporter",
     "JsonExporter",
     "MarkdownExporter",

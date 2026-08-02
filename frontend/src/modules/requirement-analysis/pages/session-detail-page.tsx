@@ -24,6 +24,7 @@ import {
 } from "@/modules/requirement-analysis/hooks/use-requirement-analysis";
 import { LoadingState } from "@/components/loading-state";
 import { EmptyState } from "@/components/empty-state";
+import { SessionExportMenu } from "@/components/session-export-menu";
 
 export function SessionDetailPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -51,6 +52,12 @@ export function SessionDetailPage() {
           <code className="rounded bg-muted px-2 py-0.5 text-xs font-mono text-muted-foreground">
             {sessionId.slice(0, 8)}...
           </code>
+        )}
+        {sessionId && (
+          <SessionExportMenu
+            exportPath={`/requirements/sessions/${sessionId}/export`}
+            disabled={!data}
+          />
         )}
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <AlertDialogTrigger asChild>
