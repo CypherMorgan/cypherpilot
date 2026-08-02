@@ -4,6 +4,21 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
+## v0.5.7 — Rate Limiting (2026-08-02)
+
+### Backend
+- **Rate limiter** — in-memory sliding-window limiter (`app/infrastructure/rate_limiter.py`) with per-key buckets, lazy pruning, memory-bounding eviction, and thread-safe concurrency control
+- **Rate limit middleware** — `RateLimitMiddleware` applied to all API traffic with per-user, per-team, and per-IP (anonymous) buckets
+- **Config** — `RATE_LIMIT_*` env settings: window, per-user/per-team/anonymous limits, enable toggle, `TRUST_FORWARDED_FOR`
+- **429 responses** — consistent error envelope `{error: {code: "RATE_LIMITED", detail: {retry_after}}}` plus `Retry-After` and `X-RateLimit-*` headers on every response
+- **Exempt paths** — health/docs endpoints and all CORS preflight (OPTIONS) requests bypass rate limiting
+- **JWT identity** — valid tokens hit user + team buckets; invalid/expired tokens fall back to the anonymous IP bucket
+
+### Frontend
+- **429 handling** — api-client normalizes rate-limit errors and shows the retry delay in the error message
+
+---
+
 ## v0.5.6 — Templates (2026-07-31)
 
 ### Backend

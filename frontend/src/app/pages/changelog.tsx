@@ -10,6 +10,19 @@ interface ChangelogEntry {
 
 const entries: ChangelogEntry[] = [
   {
+    version: "0.5.7",
+    date: "2026-08-02",
+    title: "Rate Limiting",
+    items: [
+      "Per-user and per-team API rate limiting with sliding-window buckets",
+      "Anonymous per-IP bucket for unauthenticated requests",
+      "429 error envelope with Retry-After and X-RateLimit-* headers",
+      "Health, docs, and CORS preflight requests exempt from limits",
+      "Configurable via RATE_LIMIT_* environment variables",
+      "Frontend shows the retry delay when a request is rate limited",
+    ],
+  },
+  {
     version: "0.5.6",
     date: "2026-07-31",
     title: "Templates",

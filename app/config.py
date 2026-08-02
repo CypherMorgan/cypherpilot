@@ -100,6 +100,45 @@ class RetentionConfig(BaseSettings):
     this are eligible for automatic cleanup. Set to 0 to disable."""
 
 
+class RateLimitConfig(BaseSettings):
+    """API rate limiting configuration.
+
+    Applies an in-memory sliding-window limit to every API request.
+    Authenticated requests are limited per user and per team; anonymous
+    requests are limited per client IP.
+
+    Environment variables (RATE_LIMIT_ prefix, nested via ``RATE_LIMIT__``):
+      RATE_LIMIT__ENABLED              — Master switch (default: true)
+      RATE_LIMIT__WINDOW_SECONDS       — Sliding window length (default: 60)
+      RATE_LIMIT__MAX_REQUESTS_PER_USER      — Per-user cap (default: 120)
+      RATE_LIMIT__MAX_REQUESTS_PER_TEAM      — Per-team cap (default: 600)
+      RATE_LIMIT__MAX_REQUESTS_ANONYMOUS     — Per-IP cap (default: 60)
+      RATE_LIMIT__TRUST_FORWARDED_FOR — Use X-Forwarded-For for client IP
+    """
+
+    model_config = SettingsConfigDict(
+        env_prefix="RATE_LIMIT_", extra="ignore"
+    )
+
+    enabled: bool = True
+    """Master switch for rate limiting."""
+
+    window_seconds: int = 60
+    """Length of the sliding window in seconds."""
+
+    max_requests_per_user: int = 120
+    """Maximum requests per user within the window."""
+
+    max_requests_per_team: int = 600
+    """Maximum requests per team (shared across all team members)."""
+
+    max_requests_anonymous: int = 60
+    """Maximum requests per client IP for unauthenticated callers."""
+
+    trust_forwarded_for: bool = False
+    """Read the real client IP from X-Forwarded-For when behind a proxy."""
+
+
 class AppConfig(BaseSettings):
     """Top-level application configuration."""
 
@@ -115,7 +154,7 @@ class AppConfig(BaseSettings):
     """Enable debug mode. Set DEBUG=true."""
 
     app_name: str = "CypherPilot"
-    app_version: str = "0.5.6"
+    app_version: str = "0.5.7"
 
     log_level: str = "INFO"
     """Logging level: DEBUG, INFO, WARNING, ERROR."""
@@ -141,6 +180,7 @@ class AppConfig(BaseSettings):
     ai: AIConfig = Field(default_factory=AIConfig)
     storage: StorageConfig = Field(default_factory=StorageConfig)
     retention: RetentionConfig = Field(default_factory=RetentionConfig)
+    rate_limit: RateLimitConfig = Field(default_factory=RateLimitConfig)
 
     def validate_config(self) -> None:
         """Validate configuration at startup.

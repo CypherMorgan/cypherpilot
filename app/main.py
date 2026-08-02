@@ -39,7 +39,9 @@ from app.infrastructure.models import (  # noqa: F401 — registers models on Ba
 from app.infrastructure.models.audit_log import (
     AuditLog,  # noqa: F401 — registers AuditLog on Base.metadata
 )
+from app.infrastructure.rate_limiter import SlidingWindowRateLimiter
 from app.logging_ import configure_logging
+from app.middleware.rate_limit import RateLimitMiddleware
 from app.middleware.request_id import RequestIDMiddleware
 from app.modules.auth.config import AuthConfig
 from app.modules.auth.models import User  # noqa: F401 — registers User on Base.metadata
@@ -173,7 +175,20 @@ def create_app(config: AppConfig | None = None) -> FastAPI:
         redoc_url="/redoc",
     )
 
-    # CORS middleware
+    # Rate limiting middleware (per-user / per-team / per-IP).
+    app.add_middleware(
+        RateLimitMiddleware,
+        limiter=SlidingWindowRateLimiter(),
+        config=config.rate_limit,
+    )
+
+    # Request ID middleware
+    app.add_middleware(RequestIDMiddleware)
+
+    # CORS middleware — added last so it ends up OUTERMOST (Starlette's
+    # add_middleware prepends; the last-added middleware wraps the rest).
+    # This guarantees 429 responses from the rate limiter also carry the
+    # Access-Control-Allow-Origin headers browsers need to read them.
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[o.strip() for o in config.cors_origins.split(",")],
@@ -181,9 +196,6 @@ def create_app(config: AppConfig | None = None) -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
-    # Request ID middleware
-    app.add_middleware(RequestIDMiddleware)
 
     # Register error handlers
     _register_error_handlers(app)

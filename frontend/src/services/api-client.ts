@@ -39,8 +39,23 @@ apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
  */
 function normalizeError(error: AxiosError<{ error?: ApiError }>): ApiError {
   if (error.response?.data?.error) {
+    const apiError = error.response.data.error;
+    // Surface the server-provided retry delay on rate-limited requests.
+    if (
+      error.response.status === 429 &&
+      apiError.detail &&
+      typeof apiError.detail.retry_after === "number"
+    ) {
+      const retryAfter = apiError.detail.retry_after;
+      return {
+        ...apiError,
+        message: `${apiError.message} Please retry in ${retryAfter}s.`,
+        status: error.response.status,
+        requestId: "",
+      };
+    }
     return {
-      ...error.response.data.error,
+      ...apiError,
       status: error.response.status,
       requestId: "",
     };
