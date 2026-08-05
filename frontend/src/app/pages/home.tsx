@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useHealth } from "@/hooks/use-health";
 import { LoadingState } from "@/components/loading-state";
+import { UsageAnalytics } from "@/components/usage-analytics";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -200,6 +201,9 @@ export function HomePage() {
           </div>
         )}
       </section>
+
+      {/* ── Usage Analytics ───────────────────────────────── */}
+      <UsageAnalytics />
 
       {/* ── Modules ──────────────────────────────────────── */}
       <section>

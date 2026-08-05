@@ -10,6 +10,18 @@ interface ChangelogEntry {
 
 const entries: ChangelogEntry[] = [
   {
+    version: "0.5.9",
+    date: "2026-08-04",
+    title: "Dashboard & Usage Analytics",
+    items: [
+      "Usage analytics on the home page: total sessions, success rate, tokens used, and average latency",
+      "Session breakdowns by module and by status with progress bars",
+      "A 14-day activity chart showing how many sessions you run each day",
+      "Recent failures list surfaces the 5 newest failed sessions with error details",
+      "Stats are personal and authenticated — you only see your own sessions; signed-out users get a sign-in hint",
+    ],
+  },
+  {
     version: "0.5.8",
     date: "2026-08-02",
     title: "Session Export",

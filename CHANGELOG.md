@@ -4,6 +4,22 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
+## v0.5.9 — Dashboard & Usage Analytics (2026-08-04)
+
+### Backend
+- **`GET /api/v1/dashboard/stats`** — authenticated endpoint returning personal usage analytics
+- **Aggregates** — total sessions, session counts by analysis type and status, success rate, total tokens, total/avg latency
+- **Recent failures** — the 5 newest failed sessions (title, module, error message, timestamp)
+- **14-day usage series** — daily session counts bucketed in Python (DB-agnostic, works on SQLite and PostgreSQL)
+- **User scoping** — stats are computed only over the authenticated user's own sessions; stable payload shape (every type/status present, zeroed)
+
+### Frontend
+- **Usage Analytics section** on the home page: stat cards (sessions, success rate, tokens, latency), per-module and per-status breakdown bars, a 14-day activity chart (pure CSS, no chart dependency), and a recent-failures list
+- **Signed-out handling** — the section shows a sign-in hint instead of failing; degraded gracefully when the backend is unreachable
+- New `getDashboardStats` service and `useDashboardStats` query hook
+
+---
+
 ## v0.5.8 — Session Export (2026-08-02)
 
 ### Backend
