@@ -4,6 +4,23 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
+## v0.6.0 — Webhooks & Callbacks (2026-08-04)
+
+### Backend
+- **Webhook management API** — `GET/POST /api/v1/webhooks` plus `GET/PATCH/DELETE /api/v1/webhooks/{id}`; ownership-scoped with masked secrets (`whsec_****abcd`) in responses
+- **HMAC-signed delivery** — deterministic canonical JSON body with `X-CypherPilot-Signature: sha256=<hex>` (HMAC-SHA256), plus `X-CypherPilot-Event` and `X-CypherPilot-Delivery` headers
+- **Retry with linear backoff** — up to `WEBHOOK__RETRY_ATTEMPTS` attempts (default 3) with `WEBHOOK__RETRY_BACKOFF_BASE_SECONDS` steps and a per-attempt timeout; outcomes recorded in `webhook_deliveries`
+- **Event wiring** — `analysis.completed` / `analysis.failed` fired from all three analysis services (Failure Analysis incl. multi-artifact, Requirement Analysis, API Test Generation) with a stable payload (session id, analysis type, status, provider/model, tokens, latency, error)
+- **Test pings** — `POST /api/v1/webhooks/{id}/test` sends a `test.ping` event and returns the delivery outcome
+- **Best-effort delivery** — webhook errors never break the analysis flow; `fire_webhooks` swallows failures
+- **Migration** — `c1d2e3f40596` adds `webhooks` + `webhook_deliveries` tables (down_revision `b8c9d0e1f203`)
+
+### Frontend
+- **Webhooks page** at `/webhooks` — create endpoints (name, URL, subscribed events), test ping with live outcome, pause/activate, delete with confirmation, last-delivery status badge and error display
+- **Webhooks nav item** in the sidebar under the main navigation
+
+---
+
 ## v0.5.9 — Dashboard & Usage Analytics (2026-08-04)
 
 ### Backend

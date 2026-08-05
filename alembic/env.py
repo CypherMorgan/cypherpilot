@@ -28,6 +28,7 @@ from app.infrastructure.models.notification import Notification  # noqa: F401
 from app.modules.auth.models import User  # noqa: F401
 from app.modules.teams.models import Team, TeamMember  # noqa: F401
 from app.modules.templates.models import Template  # noqa: F401
+from app.modules.webhooks.models import Webhook, WebhookDelivery  # noqa: F401
 
 # Alembic Config object
 config = context.config

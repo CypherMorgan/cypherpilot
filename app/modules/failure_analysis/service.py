@@ -192,6 +192,21 @@ class FailureAnalysisService:
                     resource_id=updated.id,
                 )
 
+            # Webhook delivery for completion
+            if user_id:
+                from app.modules.webhooks.delivery import build_analysis_payload
+                from app.modules.webhooks.helpers import fire_webhooks
+
+                await fire_webhooks(
+                    self._repository._session,
+                    user_id=user_id,
+                    event="analysis.completed",
+                    payload=build_analysis_payload(
+                        "analysis.completed", updated
+                    ),
+                    session_id=updated.id,
+                )
+
             return AnalysisResponse(
                 session_id=updated.id,
                 status=AnalysisStatus.COMPLETED.value,
@@ -225,6 +240,23 @@ class FailureAnalysisService:
                     message=f"Analysis of \"{session.title or 'untitled'}\" failed: {error_msg[:200]}",
                     resource_type="session",
                     resource_id=session.id,
+                )
+
+            # Webhook delivery for failure
+            if user_id:
+                from app.modules.webhooks.delivery import build_analysis_payload
+                from app.modules.webhooks.helpers import fire_webhooks
+
+                await fire_webhooks(
+                    self._repository._session,
+                    user_id=user_id,
+                    event="analysis.failed",
+                    payload=build_analysis_payload(
+                        "analysis.failed",
+                        session,
+                        error_message=error_msg,
+                    ),
+                    session_id=session.id,
                 )
 
             if isinstance(exc, ProviderUnavailableError | InvalidResponseError | AnalysisError):
@@ -428,6 +460,21 @@ class FailureAnalysisService:
             if updated is None:
                 raise AnalysisError("Session was deleted during analysis")
 
+            # Webhook delivery for completion
+            if user_id:
+                from app.modules.webhooks.delivery import build_analysis_payload
+                from app.modules.webhooks.helpers import fire_webhooks
+
+                await fire_webhooks(
+                    self._repository._session,
+                    user_id=user_id,
+                    event="analysis.completed",
+                    payload=build_analysis_payload(
+                        "analysis.completed", updated
+                    ),
+                    session_id=updated.id,
+                )
+
             return AnalysisResponse(
                 session_id=updated.id,
                 status=AnalysisStatus.COMPLETED.value,
@@ -459,6 +506,23 @@ class FailureAnalysisService:
                     "error_message": error_msg,
                 },
             )
+
+            # Webhook delivery for failure
+            if user_id:
+                from app.modules.webhooks.delivery import build_analysis_payload
+                from app.modules.webhooks.helpers import fire_webhooks
+
+                await fire_webhooks(
+                    self._repository._session,
+                    user_id=user_id,
+                    event="analysis.failed",
+                    payload=build_analysis_payload(
+                        "analysis.failed",
+                        session,
+                        error_message=error_msg,
+                    ),
+                    session_id=session.id,
+                )
 
             if isinstance(exc, ProviderUnavailableError | InvalidResponseError | AnalysisError):
                 raise

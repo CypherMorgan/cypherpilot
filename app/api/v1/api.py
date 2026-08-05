@@ -26,6 +26,7 @@ from app.modules.requirement_analysis.router import (
 )
 from app.modules.teams.router import router as teams_router
 from app.modules.templates.router import router as templates_router
+from app.modules.webhooks.router import router as webhooks_router
 
 router = APIRouter(prefix="/api/v1")
 
@@ -43,3 +44,4 @@ router.include_router(requirement_analysis_router)
 router.include_router(api_test_generation_router)
 router.include_router(failure_analysis_router)
 router.include_router(comparison_router)
+router.include_router(webhooks_router)

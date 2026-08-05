@@ -26,6 +26,7 @@ import { FailureAnalysisPage } from "@/modules/failure-analysis/pages/analysis-p
 import { BatchAnalysisPage } from "@/modules/failure-analysis/pages/batch-analysis-page";
 import { FailureSessionsPage } from "@/modules/failure-analysis/pages/sessions-page";
 import { FailureSessionDetailPage } from "@/modules/failure-analysis/pages/session-detail-page";
+import { WebhooksPage } from "@/modules/webhooks/pages/webhooks-page";
 
 // On GitHub Pages the site is at /cypherpilot/ — match the Vite base path here.
 const basename = import.meta.env.VITE_BASE_PATH || "/";
@@ -59,6 +60,7 @@ const router = createBrowserRouter(
             { path: "changelog", element: <ChangelogPage /> },
             { path: "activity", element: <ActivityPage /> },
             { path: "notifications", element: <NotificationsPage /> },
+            { path: "webhooks", element: <WebhooksPage /> },
             { path: "compare", element: <ComparePage /> },
             { path: "users", element: <UsersPage /> },
             // Teams

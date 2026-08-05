@@ -10,6 +10,19 @@ interface ChangelogEntry {
 
 const entries: ChangelogEntry[] = [
   {
+    version: "0.6.0",
+    date: "2026-08-04",
+    title: "Webhooks & Callbacks",
+    items: [
+      "Outgoing webhooks deliver analysis.completed and analysis.failed events to your own endpoints",
+      "HMAC-SHA256 signed deliveries (X-CypherPilot-Signature header) so receivers can verify authenticity",
+      "Automatic retries with linear backoff — failures are recorded and visible per webhook",
+      "Webhooks page at /webhooks — create endpoints, subscribe to events, pause/activate, and delete",
+      "Test ping button sends a test.ping event and shows whether your endpoint accepted it",
+      "Delivery history surfaces the last status and error message for each webhook",
+    ],
+  },
+  {
     version: "0.5.9",
     date: "2026-08-04",
     title: "Dashboard & Usage Analytics",
