@@ -39,6 +39,9 @@ from app.infrastructure.models import (  # noqa: F401 — registers models on Ba
 from app.infrastructure.models.audit_log import (
     AuditLog,  # noqa: F401 — registers AuditLog on Base.metadata
 )
+from app.infrastructure.models.notification_preference import (  # noqa: F401 — registers NotificationPreference on Base.metadata
+    NotificationPreference,
+)
 from app.infrastructure.rate_limiter import SlidingWindowRateLimiter
 from app.logging_ import configure_logging
 from app.middleware.rate_limit import RateLimitMiddleware

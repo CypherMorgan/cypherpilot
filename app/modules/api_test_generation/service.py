@@ -267,6 +267,11 @@ class ApiTestGenerationService:
                     message=f"Generation for \"{session.title or 'untitled'}\" completed successfully.",
                     resource_type="session",
                     resource_id=session.id,
+                    extra={
+                        "analysis_type": "api_test_generation",
+                        "provider": ai_response.provider.provider_name,
+                        "model": ai_response.provider.model,
+                    },
                 )
 
             # Webhook delivery for completion
@@ -324,6 +329,10 @@ class ApiTestGenerationService:
                         message=f"Generation for \"{session.title or 'untitled'}\" failed: {error_msg[:200]}",
                         resource_type="session",
                         resource_id=session.id,
+                        extra={
+                            "analysis_type": "api_test_generation",
+                            "error": error_msg[:500],
+                        },
                     )
 
                 # Webhook delivery for failure

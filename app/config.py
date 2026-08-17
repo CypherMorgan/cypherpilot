@@ -162,6 +162,53 @@ class WebhookConfig(BaseSettings):
     """HTTP timeout for a single delivery attempt in seconds."""
 
 
+class SMTPConfig(BaseSettings):
+    """SMTP email delivery configuration.
+
+    Environment variables (SMTP_ prefix, nested via ``SMTP__``):
+      SMTP__HOST             — SMTP server hostname (default: "")
+      SMTP__PORT             — SMTP server port (default: 587)
+      SMTP__USERNAME         — SMTP auth username (default: "")
+      SMTP__PASSWORD         — SMTP auth password (default: "")
+      SMTP__FROM_EMAIL       — Sender email address (default: "")
+      SMTP__FROM_NAME        — Sender display name (default: "CypherPilot")
+      SMTP__USE_TLS          — Use STARTTLS (default: true)
+      SMTP__USE_SSL          — Use implicit SSL (default: false)
+      SMTP__TIMEOUT_SECONDS  — Connection timeout (default: 10)
+    """
+
+    model_config = SettingsConfigDict(
+        env_prefix="SMTP_", extra="ignore"
+    )
+
+    host: str = ""
+    """SMTP server hostname. Leave empty to disable email delivery."""
+
+    port: int = 587
+    """SMTP server port (587 for STARTTLS, 465 for SSL)."""
+
+    username: str = ""
+    """SMTP authentication username. Falls back to from_email if empty."""
+
+    password: str = ""
+    """SMTP authentication password."""
+
+    from_email: str = ""
+    """Sender email address (From header)."""
+
+    from_name: str = "CypherPilot"
+    """Sender display name (From header)."""
+
+    use_tls: bool = True
+    """Use STARTTLS to upgrade the connection."""
+
+    use_ssl: bool = False
+    """Use implicit SSL/TLS (port 465)."""
+
+    timeout_seconds: int = 10
+    """SMTP connection timeout in seconds."""
+
+
 class AppConfig(BaseSettings):
     """Top-level application configuration."""
 
@@ -177,7 +224,7 @@ class AppConfig(BaseSettings):
     """Enable debug mode. Set DEBUG=true."""
 
     app_name: str = "CypherPilot"
-    app_version: str = "0.6.0"
+    app_version: str = "0.6.1"
 
     log_level: str = "INFO"
     """Logging level: DEBUG, INFO, WARNING, ERROR."""
@@ -205,6 +252,7 @@ class AppConfig(BaseSettings):
     retention: RetentionConfig = Field(default_factory=RetentionConfig)
     rate_limit: RateLimitConfig = Field(default_factory=RateLimitConfig)
     webhooks: WebhookConfig = Field(default_factory=WebhookConfig)
+    smtp: SMTPConfig = Field(default_factory=SMTPConfig)
 
     def validate_config(self) -> None:
         """Validate configuration at startup.

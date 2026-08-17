@@ -16,6 +16,7 @@ import { ActivityPage } from "@/modules/audit/pages/activity-page";
 import { UsersPage } from "@/modules/admin/pages/users-page";
 import { ComparePage } from "@/modules/comparison/pages/compare-page";
 import { NotificationsPage } from "@/modules/notifications/pages/notifications-page";
+import { NotificationPreferencesPage } from "@/modules/notifications/pages/notification-preferences-page";
 import { RequirementAnalysisPage } from "@/modules/requirement-analysis/pages/analysis-page";
 import { SessionDetailPage } from "@/modules/requirement-analysis/pages/session-detail-page";
 import { RequirementSessionsPage } from "@/modules/requirement-analysis/pages/sessions-page";
@@ -60,6 +61,7 @@ const router = createBrowserRouter(
             { path: "changelog", element: <ChangelogPage /> },
             { path: "activity", element: <ActivityPage /> },
             { path: "notifications", element: <NotificationsPage /> },
+            { path: "notifications/preferences", element: <NotificationPreferencesPage /> },
             { path: "webhooks", element: <WebhooksPage /> },
             { path: "compare", element: <ComparePage /> },
             { path: "users", element: <UsersPage /> },

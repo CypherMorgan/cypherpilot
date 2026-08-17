@@ -4,6 +4,28 @@ All notable changes to CypherPilot are documented here.
 
 ---
 
+## v0.6.1 — Email Notifications (2026-08-17)
+
+### Backend
+- **SMTP configuration** — new `SMTPConfig` settings class with `SMTP__HOST`, `SMTP__PORT`, `SMTP__USERNAME`, `SMTP__PASSWORD`, `SMTP__FROM_EMAIL`, `SMTP__FROM_NAME`, `SMTP__USE_TLS`, `SMTP__USE_SSL`, `SMTP__TIMEOUT_SECONDS` env vars
+- **Async email delivery** — `app/infrastructure/email.py` with `aiosmtplib`-based async SMTP sender supporting STARTTLS and implicit SSL; errors logged but never raised (best-effort)
+- **HTML email templates** — `app/infrastructure/email_templates.py` with branded inline-CSS templates for analysis completed, analysis failed, team invite, team removed, and role changed events
+- **Notification preferences model** — `notification_preferences` table with per-user email toggles: master switch (`email_enabled`) plus per-event-type (`email_analysis_completed`, `email_analysis_failed`, `email_team_invite`, `email_team_removed`, `email_team_role_changed`)
+- **Alembic migration** — `d2e3f4a5b6c7` adds `notification_preferences` table with unique constraint on `user_id` (down_revision `c1d2e3f40596`)
+- **Notification preferences module** — new `app/modules/notification_preferences/` with schemas, repository, service, and router
+- **API endpoints** — `GET /api/v1/notification-preferences` (get or create defaults), `PATCH /api/v1/notification-preferences` (partial update)
+- **Email delivery wiring** — `create_notification` helper now also sends email if the user has the event type enabled in their preferences
+- **Extra context in notification calls** — all 8 notification call sites across 4 modules (failure_analysis, requirement_analysis, api_test_generation, teams) now pass `extra` dict with template context (analysis_type, provider, model, error, team_name, role)
+
+### Frontend
+- **Notification Preferences page** at `/notifications/preferences` — master switch + per-event-type toggles for email notifications, with optimistic UI updates
+- **Preferences nav item** in sidebar under main navigation
+- **Preferences link** on the Notifications page header
+- **TanStack Query hooks** — `useNotificationPreferences` and `useUpdateNotificationPreferences` with automatic cache invalidation
+- **Email templates** — responsive HTML emails with CypherPilot branding, inline CSS for email client compatibility
+
+---
+
 ## v0.6.0 — Webhooks & Callbacks (2026-08-04)
 
 ### Backend

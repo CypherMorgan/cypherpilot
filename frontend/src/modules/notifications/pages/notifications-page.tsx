@@ -14,9 +14,11 @@ import {
   ChevronLeft,
   ChevronRight,
   Inbox,
+  Settings,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import {
   useNotifications,
   useMarkNotificationRead,
@@ -135,6 +137,7 @@ function NotificationCard({
 }
 
 export function NotificationsPage() {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const pageSize = 20;
 
@@ -184,6 +187,15 @@ export function NotificationsPage() {
             Mark all read
           </Button>
         )}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => navigate("/notifications/preferences")}
+          className="self-start sm:self-auto text-muted-foreground"
+        >
+          <Settings className="mr-1 h-4 w-4" />
+          Preferences
+        </Button>
       </div>
 
       {/* Loading state */}

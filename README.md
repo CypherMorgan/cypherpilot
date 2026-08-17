@@ -3,7 +3,7 @@
 **CypherPilot** is an AI-augmented quality engineering platform that helps QA engineers and SDETs analyze requirements, generate API test suites, and diagnose automation failures — using AI as an accelerator, not a crutch.
 
 > Created by **Cypher Morgan**
-![Version](https://img.shields.io/badge/version-0.6.0-blue)
+![Version](https://img.shields.io/badge/version-0.6.1-blue)
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green)
 ![React](https://img.shields.io/badge/React-18-blue)
@@ -23,7 +23,7 @@
 
 See the full [Changelog](./CHANGELOG.md) for the complete release history.
 
-**Latest: v0.6.0** — Webhooks & Callbacks: user-managed endpoints with HMAC-signed outbound delivery, retry with backoff, test pings, and a management page. [Read more](./CHANGELOG.md).
+**Latest: v0.6.1** — Email Notifications: per-user email preferences with branded HTML templates, SMTP configuration, and best-effort async delivery. [Read more](./CHANGELOG.md).
 
 ## Features
 
@@ -278,7 +278,8 @@ uv run ruff check
 | **v0.5.8** | Session Export — download sessions as Markdown, JSON, or CSV | ✅ Done |
 | **v0.5.9** | Dashboard & Usage Analytics — personal stats, success rate, 14-day activity chart | ✅ Done |
 | **v0.6.0** | Webhooks & Callbacks — HMAC-signed outbound delivery, retry with backoff, test pings, management page | ✅ Done |
-| **v0.6.x** | CI/CD Integration & Notifications — Slack/email alerts, GitHub/GitLab integration | 🔜 Planned |
+| **v0.6.1** | Email Notifications — SMTP config, per-user preferences, branded HTML templates, async delivery | ✅ Done |
+| **v0.6.2** | CI/CD Integration — Slack/email alerts, GitHub/GitLab integration | 🔜 Planned |
 | **v0.7.x** | Trends & Prompt Studio — historical trend analysis, prompt versioning UI, A/B prompt comparison | 🔜 Planned |
 | **v0.8.x** | Plugins & Enterprise — plugin SDK, SSO/SAML, audit logs, team billing | 🔜 Planned |
 

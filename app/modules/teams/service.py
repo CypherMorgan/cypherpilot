@@ -187,6 +187,7 @@ class TeamService:
             message=f"You were invited to team \"{team_name}\" as {role}.",
             resource_type="team",
             resource_id=str(team_id),
+            extra={"team_name": team_name, "role": role},
         )
 
         return TeamMemberResponse(
@@ -205,14 +206,16 @@ class TeamService:
 
         if result:
             team = await self._team_repo.get(team_id)
+            team_name = team.name if team else "unknown"
             await create_notification(
                 self._member_repo._session,
                 user_id=user_id,
                 type_="team.removed",
                 title="Removed from Team",
-                message=f"You were removed from team \"{team.name if team else 'unknown'}\".",
+                message=f"You were removed from team \"{team_name}\".",
                 resource_type="team",
                 resource_id=str(team_id),
+                extra={"team_name": team_name},
             )
 
         return result
@@ -260,6 +263,7 @@ class TeamService:
             message=f"Your role in team \"{team_name}\" was changed to {role.value}.",
             resource_type="team",
             resource_id=str(team_id),
+            extra={"team_name": team_name, "role": role.value},
         )
 
         user = await self._user_repo.get(user_id)
